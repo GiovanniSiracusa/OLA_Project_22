@@ -4,7 +4,6 @@ from copy import copy
 
 def simulate_episode(init_prob_matrix, n_steps_max, initial_active_node, l=0.8):
     prob_matrix = init_prob_matrix.copy()
-    np.fill_diagonal(prob_matrix, 0)
     history = np.array([initial_active_node])
     previous_all = np.zeros(n_nodes, dtype=np.int8)-2
     previous_all[np.argwhere(initial_active_node).reshape(-1)] = -1
@@ -54,6 +53,61 @@ def simulate_episode(init_prob_matrix, n_steps_max, initial_active_node, l=0.8):
         previous = np.append(previous, previous_all[np.argwhere(e).reshape(-1)])
     return history, previous
 
+def simulate_episode2(init_prob_matrix, initial_active_node, l=0.8):
+    if all(initial_active_node == 0):
+        return [], []
+    prob_matrix = init_prob_matrix.copy()
+    np.fill_diagonal(prob_matrix, 0)
+    history = np.empty((0, n_nodes))
+    active_nodes_list = np.array([initial_active_node])
+    previous_all = np.zeros(n_nodes, dtype=np.int8)-2
+    previous_all[np.argwhere(initial_active_node).reshape(-1)] = -1
+
+    t = 0
+    while (len(active_nodes_list) > 0):
+        active_node = active_nodes_list[0].copy()
+        active_nodes_list = active_nodes_list[1:]
+        idx_active = np.argwhere(active_node).reshape(-1)
+        #print("Active node ", active_node, end='\n')
+        
+        res_price = np.random.uniform(0, 1) # Cambiamo distribuzione
+        
+        if res_price < 0.7:
+            p = (prob_matrix.T * active_node).T
+            rnd = np.random.choice(np.where(np.arange(n_nodes) != idx_active)[0], 2, replace=False)
+            #print("Possible choice: ", rnd)
+            for i in range(n_nodes):
+                # Multiply by lambda the secondary product in the second slot
+                if i == rnd[0]:
+                    pass
+                elif i ==  rnd[1]:
+                    p[idx_active,i] = p[idx_active, i] * l
+                else:
+                    p[idx_active, i] = 0
+
+            #print(p)
+            activated_edges = p > np.random.rand(p.shape[0], p.shape[1])
+            #print("Activated edges: ", activated_edges)
+            prob_matrix[:, idx_active] = 0
+            
+            newly_active_nodes = (np.sum(activated_edges, axis=0) > 0) * (1 - active_node)
+            #print("Newly active nodes: ", newly_active_nodes)
+            # Split newly active nodes
+
+            for idx in rnd:
+                if newly_active_nodes[idx] == 1:
+                    prob_matrix[:, idx] = 0
+                    a = np.zeros(5)
+                    a[idx] = 1
+                    active_nodes_list = np.concatenate((active_nodes_list, [a]), axis=0)
+                    previous_all[idx] = idx_active
+            #print(active_nodes_list)
+        history = np.concatenate((history, [active_node]), axis=0)
+
+    previous = np.array([], dtype=np.int8)
+    for e in history:
+        previous = np.append(previous, previous_all[np.argwhere(e).reshape(-1)])
+    return history, previous
 
 # def estimate_probabilities(dataset, node_index, n_nodes):
 #     estimated_prob = np.ones(n_nodes) * 1.0 / (n_nodes - 1)
@@ -77,39 +131,54 @@ def simulate_episode(init_prob_matrix, n_steps_max, initial_active_node, l=0.8):
 def estimate_probabilities(dataset, previous, n_nodes):
     credits = np.zeros((n_nodes, n_nodes))
     active = np.zeros(n_nodes)
+
     for episode, prev in zip(dataset, previous):
         for e, p in zip(episode, prev):
-            #print(e,p)
-            active[np.argwhere(e).reshape(-1)] += 1
+            idx = np.argwhere(e).reshape(-1)
+            active[idx] += 1
             if p >= 0:
-                credits[np.argwhere(e).reshape(-1), p] += 1
+                credits[p, idx] += 1
             else:
-                credits[np.argwhere(e).reshape(-1), np.argwhere(e).reshape(-1)] += 1
-    #print(credits)
-    #print(active)
+                credits[idx, idx] += 0
+    print(credits)
+    print(active)
     #print(np.sum(credits, axis=0))
-    credits = credits / active.T
+    for i in range(n_nodes):
+        for j in range(n_nodes):
+            credits[i,j] = credits[i,j] / active[i]
     #print(credits.T)
-    return credits.T
+    return credits
     
 n_nodes = 5
 n_episodes = 1000
-prob_matrix = np.random.uniform(0.0, 0.3, (n_nodes, n_nodes))
+prob_matrix = np.random.uniform(0, 0.3, (n_nodes, n_nodes))
+np.fill_diagonal(prob_matrix, 0)
+
+lmbd = 0.8
+
+graph = np.zeros((n_nodes, n_nodes))
+for i in range(n_nodes):
+    rnd = np.random.choice(np.where(np.arange(n_nodes) != i)[0], 2, replace=False)
+    graph[i][rnd[0]] = 1
+    graph[i][rnd[1]] = lmbd
 
 nodes = np.array(range(n_nodes + 1))
 alphas = np.random.dirichlet(np.ones(6), size=1).reshape(-1)
-
-
+print(alphas)
+# print(prob_matrix)
+# print(graph)
+# print(prob_matrix*graph)
+# print("*********************")
 dataset = []
 previous = []
-node_index = np.array([4])
 
-for e in range(0, 1000):
+
+for e in range(0, n_episodes):
     initial_node = np.random.choice(nodes, 1, p=alphas)
     initial_active_node = np.zeros(n_nodes + 1)
     initial_active_node[initial_node] = 1
     initial_active_node = initial_active_node[1:]
-    history, prev = simulate_episode(init_prob_matrix=prob_matrix, n_steps_max=10, initial_active_node=initial_active_node)
+    history, prev = simulate_episode2(init_prob_matrix=prob_matrix, initial_active_node=initial_active_node)
     dataset.append(history)
     previous.append(prev)
     #print(previous)
@@ -122,4 +191,4 @@ print(f"{estimated_prob}")
 print("True P Matrix: ")
 print(prob_matrix)
 print()
-print(abs(prob_matrix-estimated_prob))
+print((prob_matrix-estimated_prob)/prob_matrix)
