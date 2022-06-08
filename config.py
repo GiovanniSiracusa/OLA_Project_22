@@ -4,7 +4,7 @@ np.random.seed(seed=456)
 
 
 # DEFINIRE CONVERSION RATES PER OGNI CLASSE DI UTENTI
-conversion_rates1 = np.array([[0.7, 0.5, 0.3, 0.15, 0.1],
+conversion_rates1 = np.array([[0.9, 0.7, 0.5, 0.4, 0.2],
                              [0.5, 0.3, 0.2, 0.1, 0.01],
                              [0.9, 0.7, 0.4, 0.2, 0.1],
                              [0.3, 0.25, 0.2, 0.1, 0.05],
@@ -13,11 +13,11 @@ conversion_rates2 = np.random.rand(5, 5)
 conversion_rates3 = np.random.rand(5, 5)
 
 # DEFINIRE I PREZZI DI OGNI PRODOTTO
-prices = np.array([[0, 12, 15, 18, 20],
-                  [0, 12, 15, 18, 20],
-                  [0, 12, 15, 18, 20],
-                  [0, 12, 15, 18, 20],
-                  [0, 12, 15, 18, 20]])
+prices = np.array([[100, 500, 1500, 3000, 10000],
+                  [10, 12, 15, 18, 20],
+                  [10, 12, 15, 18, 20],
+                  [10, 12, 15, 18, 20],
+                  [10, 12, 15, 18, 20]])
 
 # DEFINIRE ALPHAS PER OGNI CLASSE DI UTENTI
 alphas1 = np.array([0.1, 0.18, 0.18, 0.18, 0.18, 0.18])  #ELEMENTO 0 -> Non entra nel sito

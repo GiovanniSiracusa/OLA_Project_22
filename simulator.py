@@ -39,29 +39,39 @@ class Simulator:
 
         learner = Greedy_Learner(self.n_nodes)
 
-        time_horizon = 6
+        time_horizon = 1000
+
+        
+        temp_id = -1
         max_reward = 0
         temp_max = 0
-        max_price_conf = np.zeros(self.n_nodes)
+        max_price_conf = np.zeros(self.n_nodes, dtype=np.int8)
         temp_max_conf = max_price_conf
         counter = -1
 
+        price_conf_history = np.empty((0, self.n_nodes))
+
         for t in range(time_horizon):
             price_conf = learner.pull_arm(counter, max_price_conf)
-            reward = 0
-            for cl in [u1]:
-                daily_users = random.randint(cl.min_daily_users, cl.max_daily_users)
-                for i in range(daily_users):
-                    n = self.simulate(cl, np.zeros(self.n_nodes, dtype=np.int32))
-                    reward = reward + n
-                    print(price_conf, reward)
-            # trova un nuovo max
-            if counter == -1:
-                max_reward = reward
-                max_price_conf = price_conf
-            elif reward > temp_max:
-                temp_max = reward
-                temp_max_conf = price_conf
+            
+            if not price_conf.tolist() in price_conf_history.tolist():
+                price_conf_history = np.concatenate((price_conf_history, [price_conf]), axis=0)
+                reward = 0
+                for cl in [u1,u2,u3]:
+                    daily_users = random.randint(cl.min_daily_users, cl.max_daily_users)
+                    for i in range(daily_users):
+                        n = self.simulate(cl, price_conf)
+                        reward = reward + n
+                print(price_conf, reward)
+                # trova un nuovo max
+                if counter == -1:
+                    max_reward = reward
+                    max_price_conf = price_conf
+                    learner.update(temp_id, max_reward)
+                elif reward > temp_max:
+                    temp_max = reward
+                    temp_max_conf = price_conf
+                    temp_id = counter
 
             counter += 1
 
@@ -71,9 +81,10 @@ class Simulator:
                     max_reward = temp_max
                     max_price_conf = temp_max_conf
                     temp_max = 0
+                    learner.update(temp_id, max_reward)
+                    print(temp_id, max_reward)
                 else:
                     break
-            learner.update(None, None)
         print("Max price conf:", max_price_conf, "Max reward:", max_reward)
                     
     
