@@ -40,10 +40,10 @@ prices = np.array([[100, 500, 1500, 3000, 10000],
 # DEFINIRE ALPHAS PER OGNI CLASSE DI UTENTI
 #assunzione i maschi hanno meno probabilità di entrare in un sito di arredamento per la casa
 #np.array([no sito, alexa, quadro, cantinetta, pianta, pouf])
-alphas1 = np.array([0.15, 0.35, 0.1, 0.175, 0.05, 0.175])      #MASCHI <30              ELEMENTO 0 -> Non entra nel sito
-alphas2 = np.array([0.1, 0.185, 0.11, 0.06, 0.185, 0.36])     #FEMMINE <30             LA SOMMA DELLE ALPHA E' 1
+alphas1 = np.array([0.15, 0.35, 0.1, 0.175, 0.05, 0.175])    #MASCHI <30              ELEMENTO 0 -> Non entra nel sito
+alphas2 = np.array([0.1, 0.185, 0.11, 0.06, 0.185, 0.36])    #FEMMINE <30             LA SOMMA DELLE ALPHA E' 1
 alphas3 = np.array([0.15, 0.175, 0.1, 0.35, 0.175, 0.05])    #MASCHI >30
-alphas4 = np.array([0.1, 0.06, 0.11, 0.185, 0.36, 0.185])     #FEMMINE >30
+alphas4 = np.array([0.1, 0.06, 0.11, 0.185, 0.36, 0.185])    #FEMMINE >30
 
 min_daily_users1 = 100
 max_daily_users1 = 500
