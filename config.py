@@ -51,14 +51,18 @@ min_daily_users2 = 100
 max_daily_users2 = 500
 min_daily_users3 = 100
 max_daily_users3 = 500
+min_daily_users4 = 100
+max_daily_users4 = 500
 
 max_sold_items1 = 5
 max_sold_items2 = 5
 max_sold_items3 = 5
+max_sold_items4 = 5
 
 # DEFINIRE PROBABILITA DI PASSARE DA UN PRODOTTO A UN ALTRO PER OGNI CLASSE DI UTENTI
 
-#np.array(alexa, quadro, cantinetta, pianta, pouf
+#np.array(alexa, quadro, cantinetta, pianta, pouf         articolo di partenza
+#articolo che viene visualizzato
 #alexa
 #quadro
 #cantinetta
@@ -67,11 +71,12 @@ max_sold_items3 = 5
 
 
 #MASCHI <30
-graph_probs1 = np.array([[0, 0.5, 0.3, 0.15, 0.1],
-                        [0.5, 0, 0.2, 0.1, 0.01],
-                        [0.9, 0.7, 0, 0.2, 0.1],
-                        [0.3, 0.25, 0.2, 0, 0.05],
-                        [0.4, 0.35, 0.3, 0.25, 0]])
+graph_probs1 = np.array([[0, 0.5, 0.7, 0.4, 0.7],   #riga più alta perché prodotto che soddisfa di più la categoria
+                        [0.2, 0, 0.3, 0.4, 0.3],
+                        [0.3, 0.4, 0, 0.2, 0.1],
+                        [0.1, 0.25, 0.2, 0, 0.05],
+                        [0.3, 0.35, 0.3, 0.25, 0]])
+#colonna di alexa più bassa perché non può essere più soddisfatto di così per l'acquisto
 
 #FEMMINE <30
 graph_probs2 = np.array([[0, 0.5, 0.3, 0.15, 0.1],
