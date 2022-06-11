@@ -81,7 +81,7 @@ max_sold_items4 = 5
 #pouf
 
 #0,2=peggioramento  0,3=stesse condizioni   0,4=miglioramento
-#assunzione quadro = a prodotti che condividono una categoria 
+#assunzione quadro = a prodotti che condividono una categoria
 
 #MASCHI <30
 graph_probs1 = np.array([[0, 0.7, 0.6, 0.8, 0.6],   #riga più alta perché prodotto che soddisfa di più la categoria
@@ -95,7 +95,7 @@ graph_probs2 = np.array([[0, 0.3, 0.4, 0.3, 0.2],
                         [0.3, 0, 0.4, 0.3, 0.2],
                         [0.2, 0.2, 0, 0.2, 0.1],
                         [0.3, 0.3, 0.4, 0, 0.02],
-                        [0.6, 0.7, 0.8, 0.6, 0]]) #riga più alta perché prodotto che soddisfa di più la categoria
+                        [0.6, 0.7, 0.8, 0.6, 0]])   #riga più alta perché prodotto che soddisfa di più la categoria
 
 #MASCHI >30
 graph_probs3 = np.array([[0, 0.3, 0.2, 0.3, 0.4],
@@ -108,5 +108,5 @@ graph_probs3 = np.array([[0, 0.3, 0.2, 0.3, 0.4],
 graph_probs4 = np.array([[0, 0.2, 0.2, 0.1, 0.2],
                         [0.4, 0, 0.3, 0.2, 0.03],
                         [0.4, 0.3, 0, 0.2, 0.3],
-                        [0.8, 0.7, 0.6, 0, 0.06],  #riga più alta perché prodotto che soddisfa di più la categoria
+                        [0.8, 0.7, 0.6, 0, 0.06],   #riga più alta perché prodotto che soddisfa di più la categoria
                         [0.4, 0.3, 0.3, 0.2, 0]])
