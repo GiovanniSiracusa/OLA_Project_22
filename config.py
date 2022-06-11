@@ -13,6 +13,9 @@ np.random.seed(seed=456)
 #FEMMINE >30 --> PIANTA GRASSA
 #QUADRO MEDIUM/HIGH PRICE PIACE A TUTTE LE CATEGORIE MA MENO DEI PREFERITI
 
+#PRODOTTI CHE SODDISFANO CATEGORIE CON UN PARAMETRO IN COMUNE ED IL QUADRO SONO PREFRITI A PRODOTTI CHE NON LO FANNO
+#esempio m<30 preferisce il pouf (<30), la cantinetta (maschio) ed il quadro alla pianta
+
 #MASCHI <30 ANNI
 conversion_rates1 = np.array([[0.9, 0.75, 0.6, 0.3, 0.1],   #Alexa
                              [0.5, 0.4, 0.3, 0.1, 0.01],    #Quadro medium/high price
