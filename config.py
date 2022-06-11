@@ -14,7 +14,7 @@ np.random.seed(seed=456)
 #QUADRO MEDIUM/HIGH PRICE PIACE A TUTTE LE CATEGORIE MA MENO DEI PREFERITI
 
 #PRODOTTI CHE SODDISFANO CATEGORIE CON UN PARAMETRO IN COMUNE ED IL QUADRO SONO PREFRITI A PRODOTTI CHE NON LO FANNO
-#esempio m<30 preferisce il pouf (<30), la cantinetta (maschio) ed il quadro alla pianta
+#esempio m<30 -->  pouf (<30) = cantinetta (maschio) > quadro > pianta
 
 #MASCHI <30 ANNI
 conversion_rates1 = np.array([[0.9, 0.75, 0.6, 0.3, 0.1],   #Alexa
