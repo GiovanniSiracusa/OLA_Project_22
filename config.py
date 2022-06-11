@@ -31,11 +31,11 @@ conversion_rates4 = np.array([[0.4, 0,3, 0.2, 0.05, 0.01],  #Alexa
                              [0.6, 0.45, 0.3, 0.1, 0.05]])  #Pouf
 
 # DEFINIRE I PREZZI DI OGNI PRODOTTO
-prices = np.array([[100, 500, 1500, 3000, 10000],
-                  [10, 12, 15, 18, 20],
-                  [10, 12, 15, 18, 20],
-                  [10, 12, 15, 18, 20],
-                  [10, 12, 15, 18, 20]])
+prices = np.array([[19.99, 24.99, 27.99, 33.99, 49.99],         #alexa
+                  [169, 179, 189, 205, 215],                    #quadro
+                  [229.99, 239.99, 249.99, 289.99, 329.99],     #cantinetta
+                  [15.99, 19.99, 21.99, 22.99, 25.89],          #pianta
+                  [64.99, 69.99, 72.99, 75.95, 79.99]])         #pouf
 
 # DEFINIRE ALPHAS PER OGNI CLASSE DI UTENTI
 #assunzione i maschi hanno meno probabilità di entrare in un sito di arredamento per la casa
@@ -69,26 +69,26 @@ max_sold_items4 = 5
 #pianta
 #pouf
 
+#0,2=peggioramento  0,3=stesse condizioni   0,4=miglioramento
 
 #MASCHI <30
-graph_probs1 = np.array([[0, 0.5, 0.7, 0.4, 0.7],   #riga più alta perché prodotto che soddisfa di più la categoria
-                        [0.2, 0, 0.3, 0.4, 0.3],
-                        [0.3, 0.4, 0, 0.2, 0.1],
-                        [0.1, 0.25, 0.2, 0, 0.05],
-                        [0.3, 0.35, 0.3, 0.25, 0]])
-#colonna di alexa più bassa perché non può essere più soddisfatto di così per l'acquisto
+graph_probs1 = np.array([[0, 0.7, 0.6, 0.8, 0.6],   #riga più alta perché prodotto che soddisfa di più la categoria
+                        [0.2, 0, 0.2, 0.3, 0.2],
+                        [0.3, 0.4, 0, 0.4, 0.3],
+                        [0.1, 0.2, 0.2, 0, 0.2],
+                        [0.3, 0.4, 0.3, 0.4, 0]])
 
 #FEMMINE <30
-graph_probs2 = np.array([[0, 0.5, 0.3, 0.15, 0.1],
+graph_probs2 = np.array([[0, 0.4, 0.3, 0.15, 0.1],
                         [0.5, 0, 0.2, 0.1, 0.01],
                         [0.9, 0.7, 0, 0.2, 0.1],
                         [0.3, 0.25, 0.2, 0, 0.05],
-                        [0.4, 0.35, 0.3, 0.25, 0]])
+                        [0.4, 0.35, 0.3, 0.25, 0]]) #riga più alta perché prodotto che soddisfa di più la categoria
 
 #MASCHI >30
 graph_probs3 = np.array([[0, 0.5, 0.3, 0.15, 0.1],
                         [0.5, 0, 0.2, 0.1, 0.01],
-                        [0.9, 0.7, 0, 0.2, 0.1],
+                        [0.9, 0.7, 0, 0.2, 0.1],    #riga più alta perché prodotto che soddisfa di più la categoria
                         [0.3, 0.25, 0.2, 0, 0.05],
                         [0.4, 0.35, 0.3, 0.25, 0]])
 
@@ -96,5 +96,5 @@ graph_probs3 = np.array([[0, 0.5, 0.3, 0.15, 0.1],
 graph_probs4 = np.array([[0, 0.5, 0.3, 0.15, 0.1],
                         [0.5, 0, 0.2, 0.1, 0.01],
                         [0.9, 0.7, 0, 0.2, 0.1],
-                        [0.3, 0.25, 0.2, 0, 0.05],
+                        [0.3, 0.25, 0.2, 0, 0.05],  #riga più alta perché prodotto che soddisfa di più la categoria
                         [0.4, 0.35, 0.3, 0.25, 0]])
