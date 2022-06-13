@@ -1,93 +1,181 @@
 import random
 from typing import List
+
+from cv2 import mean
 from Greedy_Learner import Greedy_Learner
 import config as cf
 import numpy as np
 from pricing_env import UserClass
 
+
 class Simulator:
     n_nodes = 5
     l = 0.8
+    u1 = UserClass(
+        cf.conversion_rates1,
+        cf.min_daily_users1,
+        cf.max_daily_users1,
+        cf.alphas1,
+        cf.max_sold_items1,
+        cf.graph_probs1
+    )
+
+    u2 = UserClass(
+        cf.conversion_rates2,
+        cf.min_daily_users2,
+        cf.max_daily_users2,
+        cf.alphas2,
+        cf.max_sold_items2,
+        cf.graph_probs2
+    )
+
+    u3 = UserClass(
+        cf.conversion_rates3,
+        cf.min_daily_users3,
+        cf.max_daily_users3,
+        cf.alphas3,
+        cf.max_sold_items3,
+        cf.graph_probs3
+    )
+
+    user_classes = [u1, u2, u3]
 
     def step2(self):
-        u1 = UserClass(
-            cf.conversion_rates1,
-            cf.min_daily_users1,
-            cf.max_daily_users1,
-            cf.alphas1,
-            cf.max_sold_items1,
-            cf.graph_probs1
-        )
+        n_experiments = 10
+        time_horizon = 100
+        final_max_reward = 0
+        final_max_price_conf = np.zeros(self.n_nodes, dtype=np.int8)
 
-        u2 = UserClass(
-            cf.conversion_rates2,
-            cf.min_daily_users2,
-            cf.max_daily_users2,
-            cf.alphas2,
-            cf.max_sold_items2,
-            cf.graph_probs2
-        )
+        for e in range(n_experiments):
+            learner = Greedy_Learner(self.n_nodes)
 
-        u3 = UserClass(
-            cf.conversion_rates3,
-            cf.min_daily_users3,
-            cf.max_daily_users3,
-            cf.alphas3,
-            cf.max_sold_items3,
-            cf.graph_probs3
-        )
+            print("Exp:", e)
+            temp_id = -1
+            max_reward = 0
+            temp_max = 0
+            max_price_conf = np.zeros(self.n_nodes, dtype=np.int8)
+            temp_max_conf = max_price_conf
+            counter = -1
+            price_conf_history = np.empty((0, self.n_nodes))
 
-        learner = Greedy_Learner(self.n_nodes)
+            for t in range(time_horizon):
+                price_conf = learner.pull_arm(counter, max_price_conf)
 
-        time_horizon = 1000
+                if not price_conf.tolist() in price_conf_history.tolist():
+                    price_conf_history = np.concatenate(
+                        (price_conf_history, [price_conf]), axis=0)
+                    reward = 0
+                    for cl in self.user_classes:
+                        daily_users = random.randint(
+                            cl.min_daily_users, cl.max_daily_users)
+                        for i in range(daily_users):
+                            n = self.simulate(
+                                cl.alphas, cl.conversion_rates, cl.graph_probs, cl.max_sold_items, price_conf)
+                            reward = reward + n
+                    print(price_conf, reward)
+                    # trova un nuovo max
+                    if counter == -1:
+                        max_reward = reward
+                        max_price_conf = price_conf
+                        learner.update(temp_id, max_reward)
+                    elif reward > temp_max:
+                        temp_max = reward
+                        temp_max_conf = price_conf
+                        temp_id = counter
 
-        
-        temp_id = -1
-        max_reward = 0
-        temp_max = 0
-        max_price_conf = np.zeros(self.n_nodes, dtype=np.int8)
-        temp_max_conf = max_price_conf
-        counter = -1
+                counter += 1
 
-        price_conf_history = np.empty((0, self.n_nodes))
+                if counter == self.n_nodes:
+                    counter = 0
+                    if temp_max >= max_reward:
+                        max_reward = temp_max
+                        max_price_conf = temp_max_conf
+                        temp_max = 0
+                        learner.update(temp_id, max_reward)
+                        print(temp_id, max_reward)
+                    else:
+                        break
+            print("Max price conf:", max_price_conf, "Max reward:", max_reward)
 
-        for t in range(time_horizon):
-            price_conf = learner.pull_arm(counter, max_price_conf)
-            
-            if not price_conf.tolist() in price_conf_history.tolist():
-                price_conf_history = np.concatenate((price_conf_history, [price_conf]), axis=0)
-                reward = 0
-                for cl in [u1,u2,u3]:
-                    daily_users = random.randint(cl.min_daily_users, cl.max_daily_users)
-                    for i in range(daily_users):
-                        n = self.simulate(cl, price_conf)
-                        reward = reward + n
-                print(price_conf, reward)
-                # trova un nuovo max
-                if counter == -1:
-                    max_reward = reward
-                    max_price_conf = price_conf
-                    learner.update(temp_id, max_reward)
-                elif reward > temp_max:
-                    temp_max = reward
-                    temp_max_conf = price_conf
-                    temp_id = counter
+            if max_reward > final_max_reward:
+                final_max_price_conf = max_price_conf
+                final_max_reward = max_reward
+        print(
+            f"Final max reward {final_max_reward}\nFinal price conf {final_max_price_conf}")
 
-            counter += 1
 
-            if counter == self.n_nodes:
-                counter = 0
-                if temp_max >= max_reward:
-                    max_reward = temp_max
-                    max_price_conf = temp_max_conf
-                    temp_max = 0
-                    learner.update(temp_id, max_reward)
-                    print(temp_id, max_reward)
-                else:
-                    break
-        print("Max price conf:", max_price_conf, "Max reward:", max_reward)
-                    
+    # Pullare un arm per ogni prodotto -> [0, 2, 1, 4, 0]
+    # Simulare un round con la price conf pullata -> simulate(price_conf=[0, 2, 1, 4, 0])
+    # Per ogni prodotto ritornare se è stato comprato o no -> [1, 0, 0, 1, 0]
+    # E calcolare il reward di ogni prodotto
+    # Aggiornare le beta
     
+    def step3(self):
+        min_daily_users = 500
+        max_daily_users = 1500
+        n_experiments = 10
+        time_horizon = 100
+        final_max_reward = 0
+        final_max_price_conf = np.zeros(self.n_nodes, dtype=np.int8)
+
+        for e in range(n_experiments):
+            learner = Greedy_Learner(self.n_nodes)
+            print("Exp:", e)
+            temp_id = -1
+            max_reward = 0
+            temp_max = 0
+            max_price_conf = np.zeros(self.n_nodes, dtype=np.int8)
+            temp_max_conf = max_price_conf
+            counter = -1
+            price_conf_history = np.empty((0, self.n_nodes))
+
+            mean_conversion_rates = (self.u1.conversion_rates + self.u2.conversion_rates + self.u3.conversion_rates)/3
+            
+            for t in range(time_horizon):
+                price_conf = learner.pull_arm(counter, max_price_conf)
+
+                if not price_conf.tolist() in price_conf_history.tolist():
+                    price_conf_history = np.concatenate(
+                        (price_conf_history, [price_conf]), axis=0)
+                    reward = 0
+                    for cl in self.user_classes:
+                        daily_users = random.randint(
+                            cl.min_daily_users, cl.max_daily_users)
+                        for i in range(daily_users):
+                            n = self.simulate(
+                                cl.alphas, cl.conversion_rates, cl.graph_probs, cl.max_sold_items, price_conf)
+                        reward = reward + n
+                    print(price_conf, reward)
+                    # trova un nuovo max
+                    if counter == -1:
+                        max_reward = reward
+                        max_price_conf = price_conf
+                        learner.update(temp_id, max_reward)
+                    elif reward > temp_max:
+                        temp_max = reward
+                        temp_max_conf = price_conf
+                        temp_id = counter
+
+                counter += 1
+
+                if counter == self.n_nodes:
+                    counter = 0
+                    if temp_max >= max_reward:
+                        max_reward = temp_max
+                        max_price_conf = temp_max_conf
+                        temp_max = 0
+                        learner.update(temp_id, max_reward)
+                        print(temp_id, max_reward)
+                    else:
+                        break
+            print("Max price conf:", max_price_conf, "Max reward:", max_reward)
+
+            if max_reward > final_max_reward:
+                final_max_price_conf = max_price_conf
+                final_max_reward = max_reward
+        print(
+            f"Final max reward {final_max_reward}\nFinal price conf {final_max_price_conf}")
+
     def initial_node(self, alphas):
         nodes = np.array(range(self.n_nodes + 1))
         initial_node = np.random.choice(nodes, 1, p=alphas)
@@ -97,15 +185,15 @@ class Simulator:
 
         return initial_active_node
 
-    def simulate(self, uc: UserClass, price_conf):
-        initial_active_node = self.initial_node(uc.alphas)
+    def simulate(self, alphas, cr, graph_probs, max_sold_items, price_conf):
+        initial_active_node = self.initial_node(alphas)
 
         if all(initial_active_node == 0):
             return 0
 
-        prob_matrix = uc.graph_probs.copy()
+        prob_matrix = graph_probs.copy()
         np.fill_diagonal(prob_matrix, 0)
-        
+
         history = np.empty((0, self.n_nodes))
         active_nodes_list = np.array([initial_active_node])
         previous_all = np.zeros(self.n_nodes, dtype=np.int8)-2
@@ -119,31 +207,35 @@ class Simulator:
             active_nodes_list = active_nodes_list[1:]
             idx_active = np.argwhere(active_node).reshape(-1)
             #print("Active node ", active_node, end='\n')
-            
-            if np.random.uniform(0, 1) < uc.conversion_rates[idx_active, price_conf[idx_active]]: # Quando acquista
+
+            # Quando acquista
+            if np.random.uniform(0, 1) < cr[idx_active, price_conf[idx_active]]:
 
                 # Calcola il reward per tot item comprati
-                items_sold = random.randint(1, uc.max_sold_items)
-                reward = reward + cf.margin[idx_active, price_conf[idx_active]] * items_sold
+                items_sold = random.randint(1, max_sold_items)
+                reward = reward + cf.margin[idx_active,
+                                            price_conf[idx_active]] * items_sold
 
                 p = (prob_matrix.T * active_node).T
-                rnd = np.random.choice(np.where(np.arange(self.n_nodes) != idx_active)[0], 2, replace=False)
+                rnd = np.random.choice(np.where(np.arange(self.n_nodes) != idx_active)[
+                                       0], 2, replace=False)
                 #print("Possible choice: ", rnd)
                 for i in range(self.n_nodes):
                     # Multiply by lambda the secondary product in the second slot
                     if i == rnd[0]:
                         pass
-                    elif i ==  rnd[1]:
-                        p[idx_active,i] = p[idx_active, i] * self.l
+                    elif i == rnd[1]:
+                        p[idx_active, i] = p[idx_active, i] * self.l
                     else:
                         p[idx_active, i] = 0
 
-                #print(p)
+                # print(p)
                 activated_edges = p > np.random.rand(p.shape[0], p.shape[1])
                 #print("Activated edges: ", activated_edges)
                 prob_matrix[:, idx_active] = 0
-                
-                newly_active_nodes = (np.sum(activated_edges, axis=0) > 0) * (1 - active_node)
+
+                newly_active_nodes = (
+                    np.sum(activated_edges, axis=0) > 0) * (1 - active_node)
                 #print("Newly active nodes: ", newly_active_nodes)
                 # Split newly active nodes
 
@@ -152,17 +244,18 @@ class Simulator:
                         prob_matrix[:, idx] = 0
                         a = np.zeros(5)
                         a[idx] = 1
-                        active_nodes_list = np.concatenate((active_nodes_list, [a]), axis=0)
+                        active_nodes_list = np.concatenate(
+                            (active_nodes_list, [a]), axis=0)
                         previous_all[idx] = idx_active
-                #print(active_nodes_list)
+                # print(active_nodes_list)
             history = np.concatenate((history, [active_node]), axis=0)
 
         previous = np.array([], dtype=np.int8)
         for e in history:
-            previous = np.append(previous, previous_all[np.argwhere(e).reshape(-1)])
-        #return history, previous
+            previous = np.append(
+                previous, previous_all[np.argwhere(e).reshape(-1)])
+        # return history, previous
         return reward
-
 
 
 sim = Simulator()

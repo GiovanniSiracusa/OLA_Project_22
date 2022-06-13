@@ -10,7 +10,7 @@ opt = p[3]
 
 T = 300
 
-n_experiment = 1000
+n_experiment = 10
 ts_rewards_per_experiment = []
 gr_rewards_per_experiment = []
 
