@@ -124,7 +124,7 @@ class Simulator:
 
                 # Calcola il reward per tot item comprati
                 items_sold = random.randint(1, uc.max_sold_items)
-                reward = reward + cf.prices[idx_active, price_conf[idx_active]] * items_sold
+                reward = reward + cf.margin[idx_active, price_conf[idx_active]] * items_sold
 
                 p = (prob_matrix.T * active_node).T
                 rnd = np.random.choice(np.where(np.arange(self.n_nodes) != idx_active)[0], 2, replace=False)

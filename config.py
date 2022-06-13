@@ -20,12 +20,12 @@ np.random.seed(seed=456)
 conversion_rates1 = np.array([[0.9, 0.75, 0.6, 0.3, 0.1],   #Alexa
                              [0.5, 0.4, 0.3, 0.1, 0.01],    #Quadro medium/high price
                              [0.6, 0.45, 0.3, 0.1, 0.05],   #Cantinetta per il vino
-                             [0.4, 0,3, 0.2, 0.05, 0.01],   #Pianta grassa
+                             [0.4, 0.3, 0.2, 0.05, 0.01],   #Pianta grassa
                              [0.6, 0.45, 0.3, 0.1, 0.05]])  #Pouf
 #FEMMINE <30 ANNI
 conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1, 0.05],  #Alexa
                              [0.5, 0.4, 0.3, 0.1, 0.01],    #Quadro medium/high price
-                             [0.4, 0,3, 0.2, 0.05, 0.01],   #Cantinetta per il vino
+                             [0.4, 0.3, 0.2, 0.05, 0.01],   #Cantinetta per il vino
                              [0.6, 0.45, 0.3, 0.1, 0.05],   #Pianta grassa
                              [0.9, 0.75, 0.6, 0.3, 0.1]])   #Pouf
 #MASCHI >30 ANNI
@@ -33,9 +33,9 @@ conversion_rates3 = np.array([[0.6, 0.45, 0.3, 0.1, 0.05],  #Alexa
                              [0.5, 0.3, 0.2, 0.1, 0.01],    #Quadro medium/high price
                              [0.9, 0.75, 0.6, 0.3, 0.1],    #Cantinetta per il vino
                              [0.6, 0.45, 0.3, 0.1, 0.05],   #Pianta grassa
-                             [0.4, 0,3, 0.2, 0.05, 0.01]])  #Pouf
+                             [0.4, 0.3, 0.2, 0.05, 0.01]])  #Pouf
 #FEMMINE >30 ANNI
-conversion_rates4 = np.array([[0.4, 0,3, 0.2, 0.05, 0.01],  #Alexa
+conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05, 0.01],  #Alexa
                              [0.5, 0.3, 0.2, 0.1, 0.01],    #Quadro medium/high price
                              [0.6, 0.45, 0.3, 0.1, 0.05],   #Cantinetta per il vino
                              [0.9, 0.75, 0.6, 0.3, 0.1],    #Pianta grassa
@@ -47,6 +47,11 @@ prices = np.array([[19.99, 24.99, 27.99, 33.99, 49.99],         #alexa
                   [229.99, 239.99, 249.99, 289.99, 329.99],     #cantinetta
                   [15.99, 19.99, 21.99, 22.99, 25.89],          #pianta
                   [64.99, 69.99, 72.99, 75.95, 79.99]])         #pouf
+
+costs = np.array([[5], [80], [170], [8], [18]])
+
+margin = prices - costs
+print(margin)
 
 # DEFINIRE ALPHAS PER OGNI CLASSE DI UTENTI
 # assunzione i maschi hanno meno probabilità di entrare in un sito di arredamento per la casa
@@ -88,25 +93,25 @@ graph_probs1 = np.array([[0, 0.7, 0.6, 0.8, 0.6],   #riga più alta perché prod
                         [0.2, 0, 0.3, 0.4, 0.3],
                         [0.2, 0.3, 0, 0.4, 0.3],
                         [0.1, 0.2, 0.2, 0, 0.2],
-                        [0.2, 0.3, 0.3, 0.4, 0]])
+                        [0.2, 0.3, 0.3, 0.4, 0]]).T
 
 #FEMMINE <30
 graph_probs2 = np.array([[0, 0.3, 0.4, 0.3, 0.2],
                         [0.3, 0, 0.4, 0.3, 0.2],
                         [0.2, 0.2, 0, 0.2, 0.1],
                         [0.3, 0.3, 0.4, 0, 0.02],
-                        [0.6, 0.7, 0.8, 0.6, 0]])   #riga più alta perché prodotto che soddisfa di più la categoria
+                        [0.6, 0.7, 0.8, 0.6, 0]]).T   #riga più alta perché prodotto che soddisfa di più la categoria
 
 #MASCHI >30
 graph_probs3 = np.array([[0, 0.3, 0.2, 0.3, 0.4],
                         [0.3, 0, 0.2, 0.3, 0.4],
                         [0.6, 0.7, 0, 0.6, 0.8],    #riga più alta perché prodotto che soddisfa di più la categoria
                         [0.3, 0.3, 0.2, 0, 0.4],
-                        [0.2, 0.2, 0.1, 0.2, 0]])
+                        [0.2, 0.2, 0.1, 0.2, 0]]).T
 
 #FEMMINIE >30
 graph_probs4 = np.array([[0, 0.2, 0.2, 0.1, 0.2],
                         [0.4, 0, 0.3, 0.2, 0.03],
                         [0.4, 0.3, 0, 0.2, 0.3],
                         [0.8, 0.7, 0.6, 0, 0.06],   #riga più alta perché prodotto che soddisfa di più la categoria
-                        [0.4, 0.3, 0.3, 0.2, 0]])
+                        [0.4, 0.3, 0.3, 0.2, 0]]).T
