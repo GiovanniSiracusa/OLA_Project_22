@@ -17,36 +17,36 @@ np.random.seed(seed=456)
 #esempio m<35 -->  pouf (<35) = cantinetta (maschio) > quadro > pianta
 
 #MASCHI <35 ANNI
-conversion_rates1 = np.array([[0.9, 0.75, 0.6, 0.3, 0.1],   #Alexa
-                             [0.5, 0.4, 0.3, 0.1, 0.01],    #Quadro medium/high price
-                             [0.6, 0.45, 0.3, 0.1, 0.05],   #Cantinetta per il vino
-                             [0.4, 0.3, 0.2, 0.05, 0.01],   #Pianta grassa
-                             [0.6, 0.45, 0.3, 0.1, 0.05]])  #Pouf
+conversion_rates1 = np.array([[0.9, 0.75, 0.6, 0.3],  #Alexa
+                             [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
+                             [0.6, 0.45, 0.3, 0.1],   #Cantinetta per il vino
+                             [0.4, 0.3, 0.2, 0.05],   #Pianta grassa
+                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 #FEMMINE <35 ANNI
-conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1, 0.05],  #Alexa
-                             [0.5, 0.4, 0.3, 0.1, 0.01],    #Quadro medium/high price
-                             [0.4, 0.3, 0.2, 0.05, 0.01],   #Cantinetta per il vino
-                             [0.6, 0.45, 0.3, 0.1, 0.05],   #Pianta grassa
-                             [0.9, 0.75, 0.6, 0.3, 0.1]])   #Pouf
+conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
+                             [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
+                             [0.4, 0.3, 0.2, 0.05],   #Cantinetta per il vino
+                             [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
+                             [0.9, 0.75, 0.6, 0.3]])  #Pouf
 #MASCHI >35 ANNI
-conversion_rates3 = np.array([[0.6, 0.45, 0.3, 0.1, 0.05],  #Alexa
-                             [0.5, 0.3, 0.2, 0.1, 0.01],    #Quadro medium/high price
-                             [0.9, 0.75, 0.6, 0.3, 0.1],    #Cantinetta per il vino
-                             [0.6, 0.45, 0.3, 0.1, 0.05],   #Pianta grassa
-                             [0.4, 0.3, 0.2, 0.05, 0.01]])  #Pouf
+conversion_rates3 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
+                             [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
+                             [0.9, 0.75, 0.6, 0.3],    #Cantinetta per il vino
+                             [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
+                             [0.4, 0.3, 0.2, 0.05]])  #Pouf
 #FEMMINE >35 ANNI
-conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05, 0.01],  #Alexa
-                             [0.5, 0.3, 0.2, 0.1, 0.01],    #Quadro medium/high price
-                             [0.6, 0.45, 0.3, 0.1, 0.05],   #Cantinetta per il vino
-                             [0.9, 0.75, 0.6, 0.3, 0.1],    #Pianta grassa
-                             [0.6, 0.45, 0.3, 0.1, 0.05]])  #Pouf
+conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05],  #Alexa
+                             [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
+                             [0.6, 0.45, 0.3, 0.1],   #Cantinetta per il vino
+                             [0.9, 0.75, 0.6, 0.3],    #Pianta grassa
+                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
 # DEFINIRE I PREZZI DI OGNI PRODOTTO
-prices = np.array([[19.99, 24.99, 27.99, 33.99, 49.99],         #alexa
-                  [169, 179, 189, 205, 215],                    #quadro
-                  [229.99, 239.99, 249.99, 289.99, 329.99],     #cantinetta
-                  [15.99, 19.99, 21.99, 22.99, 25.89],          #pianta
-                  [64.99, 69.99, 72.99, 75.95, 79.99]])         #pouf
+prices = np.array([[20, 25, 34 50],          #alexa
+                  [169, 179, 205, 215],      #quadro
+                  [230, 240, 290, 330],      #cantinetta
+                  [16, 20, 23, 26],          #pianta
+                  [65, 70, 76, 80]])         #pouf
 
 costs = np.array([[5], [80], [170], [8], [18]])
 
