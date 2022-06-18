@@ -42,9 +42,9 @@ conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05],  #Alexa
                              [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
 # DEFINIRE I PREZZI DI OGNI PRODOTTO
-prices = np.array([[20, 25, 34 50],          #alexa
-                  [169, 179, 205, 215],      #quadro
-                  [230, 240, 290, 330],      #cantinetta
+prices = np.array([[20, 25, 34, 50],          #alexa
+                  [169, 189, 205, 215],      #quadro
+                  [230, 240, 250, 330],      #cantinetta
                   [16, 20, 23, 26],          #pianta
                   [65, 70, 76, 80]])         #pouf
 
