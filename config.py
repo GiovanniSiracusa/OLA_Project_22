@@ -53,7 +53,6 @@ prices = np.array([[20, 25, 34, 50],         #alexa
 costs = np.array([[16], [88], [152], [4], [25]])
 
 margin = prices - costs
-print(margin)
 
 # DEFINIRE ALPHAS PER OGNI CLASSE DI UTENTI
 # assunzione i maschi hanno meno probabilità di entrare in un sito di arredamento per la casa
