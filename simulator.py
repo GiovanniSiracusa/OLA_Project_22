@@ -110,7 +110,7 @@ class Simulator:
     
     def step3(self):
         n_experiments = 1
-        time_horizon = 100
+        time_horizon = 5
 
         for e in range(n_experiments):
             learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
@@ -122,9 +122,10 @@ class Simulator:
                 price_conf = np.array([learners[i].pull_arm() for i in range(self.n_products)])
                 reward, cr = self.simulate(price_conf)
                 for p in range(self.n_products):
+                    ''' Non dobbiamo passare cr al TSLearner ma il reward normalizzato in base al max reward del prodotto'''
                     learners[p].update(price_conf[p], cr[p])
                 rewards = np.append(rewards, np.sum(reward))
-                #print(price_conf, reward, cr)
+                print(price_conf, reward, cr)
             print(rewards)
         return rewards
 
@@ -231,5 +232,6 @@ rewards_per_experiment = sim.step3()
 plt.figure(0)
 plt.xlabel("t")
 plt.ylabel("Reward")
-plt.plot(np.cumsum(opt - rewards_per_experiment),'r')
+plt.plot(100*[opt*100])
+plt.plot(np.cumsum(rewards_per_experiment),'r')
 plt.show()
