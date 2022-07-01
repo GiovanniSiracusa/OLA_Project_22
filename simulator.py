@@ -1,11 +1,14 @@
 import random
 from typing import List
+
+from Gaussian_TS_Learner import Gaussian_TS_Learner
 from Greedy_Learner import Greedy_Learner
 from TS_Learner import TS_Learner
 import config as cf
 import numpy as np
 from pricing_env import UserClass
 import matplotlib.pyplot as plt
+
 
 
 
@@ -43,7 +46,7 @@ class Simulator:
     user_classes = [u1, u2, u3]
 
     def step2(self):
-        n_experiments = 5
+        n_experiments = 1
         time_horizon = 100
         final_max_reward = 0
         final_max_price_conf = np.zeros(self.n_products, dtype=np.int8)
@@ -108,11 +111,12 @@ class Simulator:
     # Aggiornare le beta
     
     def step3(self, opt):
-        n_experiments = 5
+        n_experiments = 1
         time_horizon = 100
 
         for e in range(n_experiments):
-            learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
+            #learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
+            learners = [Gaussian_TS_Learner(self.n_prices) for i in range(self.n_products)]
             print("Exp:", e)
 
             rewards = np.array([])
@@ -124,6 +128,7 @@ class Simulator:
                     ''' Non dobbiamo passare cr al TSLearner ma il reward normalizzato in base al max reward del prodotto'''
                     learners[p].update(price_conf[p], np.clip(reward[p]/opt[p], 0, 1))
                 rewards = np.append(rewards, np.sum(reward))
+                print(rewards)
                 #print(price_conf, reward, cr)
             print("Rewards", rewards)
         return rewards
@@ -235,4 +240,5 @@ plt.xlabel("t")
 plt.ylabel("Reward")
 plt.plot(100*[opt*100])
 plt.plot(np.cumsum(rewards_per_experiment),'r')
+#plt.plot(np.cumsum(opt-rewards_per_experiment))
 plt.show()
