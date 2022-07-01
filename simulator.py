@@ -43,7 +43,7 @@ class Simulator:
     user_classes = [u1, u2, u3]
 
     def step2(self):
-        n_experiments = 1
+        n_experiments = 5
         time_horizon = 100
         final_max_reward = 0
         final_max_price_conf = np.zeros(self.n_products, dtype=np.int8)
@@ -66,16 +66,14 @@ class Simulator:
                 if not price_conf.tolist() in price_conf_history.tolist():
                     price_conf_history = np.concatenate(
                         (price_conf_history, [price_conf]), axis=0)
-                    reward = 0
-                    rew, cr = self.simulate(price_conf)
-                    reward = reward + np.sum(rew)
-                    print(price_conf, round(reward,2))
+                    reward, cr = self.simulate(price_conf)
+                    # print(price_conf, np.round(reward,2), np.sum(reward))
                     # trova un nuovo max
                     if counter == -1:
                         max_reward = reward
                         max_price_conf = price_conf
-                        learner.update(temp_id, round(max_reward,2))
-                    elif reward > temp_max:
+                        learner.update()
+                    elif np.sum(reward) > np.sum(temp_max):
                         temp_max = reward
                         temp_max_conf = price_conf
                         temp_id = counter
@@ -84,21 +82,22 @@ class Simulator:
 
                 if counter == self.n_products:
                     counter = 0
-                    if temp_max >= max_reward:
+                    if np.sum(temp_max) >= np.sum(max_reward):
                         max_reward = temp_max
                         max_price_conf = temp_max_conf
                         temp_max = 0
-                        learner.update(temp_id, max_reward)
-                        print(temp_id, round(max_reward,2))
+                        learner.update()
+                        # print(temp_id, np.round(max_reward,2), np.sum(max_reward))
                     else:
                         break
-            print("Max price conf:", max_price_conf, "Max reward:", max_reward)
+            print("Max price conf:", max_price_conf, "Max reward:", max_reward, "Max total:", np.sum(max_reward))
+            print()
 
-            if max_reward > final_max_reward:
+            if np.sum(max_reward) > np.sum(final_max_reward):
                 final_max_price_conf = max_price_conf
                 final_max_reward = max_reward
         print(
-            f"Final max reward {final_max_reward}\nFinal price conf {final_max_price_conf}")
+            f"Final max reward {final_max_reward}\nFinal total reward {np.sum(final_max_reward)}\nFinal price conf {final_max_price_conf}\n")
         return final_max_reward
 
 
@@ -108,9 +107,9 @@ class Simulator:
     # E calcolare il reward di ogni prodotto
     # Aggiornare le beta
     
-    def step3(self):
-        n_experiments = 1
-        time_horizon = 5
+    def step3(self, opt):
+        n_experiments = 5
+        time_horizon = 100
 
         for e in range(n_experiments):
             learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
@@ -123,10 +122,10 @@ class Simulator:
                 reward, cr = self.simulate(price_conf)
                 for p in range(self.n_products):
                     ''' Non dobbiamo passare cr al TSLearner ma il reward normalizzato in base al max reward del prodotto'''
-                    learners[p].update(price_conf[p], cr[p])
+                    learners[p].update(price_conf[p], np.clip(reward[p]/opt[p], 0, 1))
                 rewards = np.append(rewards, np.sum(reward))
-                print(price_conf, reward, cr)
-            print(rewards)
+                #print(price_conf, reward, cr)
+            print("Rewards", rewards)
         return rewards
 
     def initial_node(self, alphas):
@@ -226,9 +225,11 @@ class Simulator:
 
 
 sim = Simulator()
-opt = sim.step2()
-rewards_per_experiment = sim.step3()
+opt_per_product = sim.step2()
+print("Optimal is", opt_per_product)
+rewards_per_experiment = sim.step3(opt_per_product)
 
+opt = np.sum(opt_per_product)
 plt.figure(0)
 plt.xlabel("t")
 plt.ylabel("Reward")
