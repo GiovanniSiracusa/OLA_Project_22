@@ -17,4 +17,6 @@ class Gaussian_TS_Learner(Learner):
         self.update_observations(pulled_arm, reward)
         self.counter[pulled_arm] += 1
         self.sum[pulled_arm] += reward
+        print("Pulled_arm: ",pulled_arm)
+        print("Sum: ", self.sum)
         #print(self.beta_parameters)

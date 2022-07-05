@@ -112,11 +112,12 @@ class Simulator:
     
     def step3(self, opt):
         n_experiments = 1
-        time_horizon = 100
+        time_horizon = 500
+
 
         for e in range(n_experiments):
             #learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
-            learners = [Gaussian_TS_Learner(self.n_prices) for i in range(self.n_products)]
+            learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
             print("Exp:", e)
 
             rewards = np.array([])
@@ -126,10 +127,12 @@ class Simulator:
                 reward, cr = self.simulate(price_conf)
                 for p in range(self.n_products):
                     ''' Non dobbiamo passare cr al TSLearner ma il reward normalizzato in base al max reward del prodotto'''
-                    learners[p].update(price_conf[p], np.clip(reward[p]/opt[p], 0, 1))
+                    learners[p].update(price_conf[p], np.clip(reward[p]/opt[p],0,1))
                 rewards = np.append(rewards, np.sum(reward))
-                print(rewards)
+                print(t)
+                print("Reward: ", reward)
                 #print(price_conf, reward, cr)
+            learners[1].plot_distribution()
             print("Rewards", rewards)
         return rewards
 
@@ -148,7 +151,7 @@ class Simulator:
         offers = np.zeros(self.n_products)
         
         for cl in self.user_classes:
-            daily_users = random.randint(cl.min_daily_users, cl.max_daily_users)
+            daily_users = 200 #random.randint(cl.min_daily_users, cl.max_daily_users)
             for i in range(daily_users):
                 # Se ci sono le alpha
                 if alphas:
@@ -183,13 +186,22 @@ class Simulator:
                         buyers[idx_active] += 1
 
                         # Calcola il reward per tot item comprati
-                        items_sold = random.randint(1, cl.max_sold_items)
+                        items_sold = 1 #random.randint(1, cl.max_sold_items)
                         reward[idx_active] += cf.margin[idx_active,
                                                     price_conf[idx_active]] * items_sold
 
+                        #print("idx_active ", idx_active)
+                        #print(prob_matrix)
                         p = (prob_matrix.T * active_node).T
-                        rnd = np.random.choice(np.where(np.arange(self.n_products) != idx_active)[
-                                            0], 2, replace=False)
+                        #print(p)
+                        rnd = np.argwhere(p[idx_active]>0)[:,1]
+                        #print(rnd)
+                        if len(rnd) == 0:
+                            rnd = np.array([0,0])
+                        if len(rnd) == 1:
+                            rnd = np.append(rnd,0)
+                                #np.random.choice(np.where(np.arange(self.n_products) != idx_active)[
+                              #              0], 2, replace=False)
                         #print("Possible choice: ", rnd)
                         for i in range(self.n_products):
                             # Multiply by lambda the secondary product in the second slot
@@ -238,7 +250,7 @@ opt = np.sum(opt_per_product)
 plt.figure(0)
 plt.xlabel("t")
 plt.ylabel("Reward")
-plt.plot(100*[opt*100])
-plt.plot(np.cumsum(rewards_per_experiment),'r')
-#plt.plot(np.cumsum(opt-rewards_per_experiment))
+plt.plot(500*[opt])
+plt.plot(rewards_per_experiment,'r')
+#plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
 plt.show()

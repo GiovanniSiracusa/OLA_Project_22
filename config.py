@@ -1,6 +1,6 @@
 import numpy as np
 
-np.random.seed(seed=456)
+np.random.seed(seed=1)
 
 
 # DEFINIRE CONVERSION RATES PER OGNI CLASSE DI UTENTI
@@ -97,22 +97,22 @@ max_sold_items4 = 5
 #                        [0.2, 0.3, 0.3, 0.4, 0]]).T
 
 #FEMMINE <35
-graph_probs2 = np.array([[0, 0.3, 0.4, 0.3, 0.2],
-                        [0.3, 0, 0.4, 0.3, 0.2],
-                        [0.2, 0.2, 0, 0.2, 0.1],
-                        [0.3, 0.3, 0.4, 0, 0.02],
-                        [0.6, 0.7, 0.8, 0.6, 0]]).T    #riga più alta perché prodotto che soddisfa di più la categoria
+graph_probs2 = np.array([[0.0, 0.0, 0.0, 0.3, 0.2],
+                        [0.3, 0.0, 0.4, 0.0, 0.2],
+                        [0.0, 0.0, 0.0, 0.0, 0.0],
+                        [0.0, 0.3, 0.0, 0.0, 0.0],
+                        [0.6, 0.7, 0.8, 0.6, 0.0]]).T    #riga più alta perché prodotto che soddisfa di più la categoria
 
 #MASCHI >35
-graph_probs3 = np.array([[0, 0.3, 0.2, 0.3, 0.4],
-                        [0.3, 0, 0.2, 0.3, 0.4],
+graph_probs3 = np.array([[0, 0.0, 0.2, 0.3, 0.4],
+                        [0.0, 0, 0.2, 0.0, 0.0],
                         [0.6, 0.7, 0, 0.6, 0.8],       #riga più alta perché prodotto che soddisfa di più la categoria
-                        [0.3, 0.3, 0.2, 0, 0.4],
-                        [0.2, 0.2, 0.1, 0.2, 0]]).T
+                        [0.0, 0.3, 0.0, 0, 0.0],
+                        [0.2, 0.0, 0.0, 0.0, 0]]).T
 
 #FEMMINIE >35
-graph_probs4 = np.array([[0, 0.2, 0.2, 0.1, 0.2],
-                        [0.4, 0, 0.3, 0.2, 0.03],
+graph_probs4 = np.array([[0, 0.0, 0.0, 0.0, 0.0],
+                        [0.0, 0, 0.3, 0.2, 0.0],
                         [0.4, 0.3, 0, 0.2, 0.3],
-                        [0.8, 0.7, 0.6, 0, 0.06],      #riga più alta perché prodotto che soddisfa di più la categoria
-                        [0.4, 0.3, 0.3, 0.2, 0]]).T
+                        [0.8, 0.7, 0.6, 0.0, 0.6],      #riga più alta perché prodotto che soddisfa di più la categoria
+                        [0.0, 0.0, 0.0, 0.0, 0.0]]).T
