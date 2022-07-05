@@ -4,13 +4,14 @@ from typing import List
 from Gaussian_TS_Learner import Gaussian_TS_Learner
 from Greedy_Learner import Greedy_Learner
 from TS_Learner import TS_Learner
+from UCB import UCB
 import config as cf
 import numpy as np
 from pricing_env import UserClass
 import matplotlib.pyplot as plt
+from scipy.ndimage import uniform_filter1d
 
-
-
+T = 300
 
 class Simulator:
     n_products = 5
@@ -112,29 +113,43 @@ class Simulator:
     
     def step3(self, opt):
         n_experiments = 1
-        time_horizon = 500
+        time_horizon = T
 
 
         for e in range(n_experiments):
             #learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
-            learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
+            ts = [TS_Learner(self.n_prices) for i in range(self.n_products)]
+            ucb = [UCB(self.n_prices) for i in range(self.n_products)]
+
             print("Exp:", e)
 
-            rewards = np.array([])
+            rewardsTS = np.array([])
+            rewardsUCB = np.array([])
 
             for t in range(time_horizon):
-                price_conf = np.array([learners[i].pull_arm() for i in range(self.n_products)])
+                # TS Learner
+                price_conf = np.array([ts[i].pull_arm() for i in range(self.n_products)])
                 reward, cr = self.simulate(price_conf)
                 for p in range(self.n_products):
-                    ''' Non dobbiamo passare cr al TSLearner ma il reward normalizzato in base al max reward del prodotto'''
-                    learners[p].update(price_conf[p], np.clip(reward[p]/opt[p],0,1))
-                rewards = np.append(rewards, np.sum(reward))
+                    ts[p].update(price_conf[p], cr[p])
+                rewardsTS = np.append(rewardsTS, np.sum(reward))
                 print(t)
-                print("Reward: ", reward)
+                #print("Reward: ", reward)
                 #print(price_conf, reward, cr)
-            learners[1].plot_distribution()
-            print("Rewards", rewards)
-        return rewards
+
+                # UCB
+                price_conf = np.array([ucb[i].pull_arm() for i in range(self.n_products)])
+                reward, cr = self.simulate(price_conf)
+                for p in range(self.n_products):
+                    ucb[p].update(price_conf[p], cr[p])
+                rewardsUCB = np.append(rewardsUCB, np.sum(reward))
+                print(t)
+                #print("Reward: ", reward)
+
+            #ts[1].plot_distribution()
+            print("Rewards", rewardsTS)
+            print("Rewards", rewardsUCB)
+        return rewardsTS, rewardsUCB
 
     def initial_node(self, alphas):
         nodes = np.array(range(self.n_products + 1))
@@ -151,7 +166,7 @@ class Simulator:
         offers = np.zeros(self.n_products)
         
         for cl in self.user_classes:
-            daily_users = 200 #random.randint(cl.min_daily_users, cl.max_daily_users)
+            daily_users = 100 #random.randint(cl.min_daily_users, cl.max_daily_users)
             for i in range(daily_users):
                 # Se ci sono le alpha
                 if alphas:
@@ -244,13 +259,16 @@ class Simulator:
 sim = Simulator()
 opt_per_product = sim.step2()
 print("Optimal is", opt_per_product)
-rewards_per_experiment = sim.step3(opt_per_product)
+rewardsTS, rewardsUCB = sim.step3(opt_per_product)
 
 opt = np.sum(opt_per_product)
 plt.figure(0)
 plt.xlabel("t")
-plt.ylabel("Reward")
-plt.plot(500*[opt])
-plt.plot(rewards_per_experiment,'r')
+plt.ylabel("Regret")
+# plt.plot(T*[opt])
+# plt.plot(rewardsTS,'r')
+# plt.plot(rewardsUCB,'g')
+plt.plot(np.cumsum(opt - rewardsTS),'r')
+plt.plot(np.cumsum(opt - rewardsUCB),'g')
 #plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
 plt.show()
