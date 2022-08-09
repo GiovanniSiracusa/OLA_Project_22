@@ -10,8 +10,9 @@ import numpy as np
 from pricing_env import UserClass
 import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
+#np.random.seed(seed=1)
 
-T = 300
+T = 100
 
 class Simulator:
     n_products = 5
@@ -70,7 +71,7 @@ class Simulator:
                 if not price_conf.tolist() in price_conf_history.tolist():
                     price_conf_history = np.concatenate(
                         (price_conf_history, [price_conf]), axis=0)
-                    reward, cr = self.simulate(price_conf)
+                    reward, cr, none, none = self.simulate(price_conf, users=100)
                     # print(price_conf, np.round(reward,2), np.sum(reward))
                     # trova un nuovo max
                     if counter == -1:
@@ -128,27 +129,34 @@ class Simulator:
 
             for t in range(time_horizon):
                 # TS Learner
-                price_conf = np.array([ts[i].pull_arm() for i in range(self.n_products)])
-                reward, cr = self.simulate(price_conf)
+                price_conf = np.array([ts[i].pull_arm(cf.prices[i]) for i in range(self.n_products)])
+                reward, cr, buyers, offers = self.simulate(price_conf,users=100)
                 for p in range(self.n_products):
-                    ts[p].update(price_conf[p], cr[p])
+                    for i in range(0,buyers[p].astype(int)):
+                        ts[p].update(price_conf[p], 1)
+                    for i in range(0,(offers[p].astype(int)-buyers[p].astype(int))):
+                        ts[p].update(price_conf[p],0)
                 rewardsTS = np.append(rewardsTS, np.sum(reward))
                 print(t)
+                print("TS: ", price_conf)
                 #print("Reward: ", reward)
                 #print(price_conf, reward, cr)
 
-                # UCB
-                price_conf = np.array([ucb[i].pull_arm() for i in range(self.n_products)])
-                reward, cr = self.simulate(price_conf)
+
+                #UCB
+                price_conf = np.array([ucb[i].pull_arm(cf.prices[i]) for i in range(self.n_products)])
+                reward, cr, buyers, offers = self.simulate(price_conf, users=100)
                 for p in range(self.n_products):
                     ucb[p].update(price_conf[p], cr[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))
-                print(t)
+                #print(t)
+                print("UCB: ",price_conf)
+
                 #print("Reward: ", reward)
 
-            #ts[1].plot_distribution()
+            ts[1].plot_distribution()
             print("Rewards", rewardsTS)
-            print("Rewards", rewardsUCB)
+            #print("Rewards", rewardsUCB)
         return rewardsTS, rewardsUCB
 
     def initial_node(self, alphas):
@@ -160,13 +168,17 @@ class Simulator:
 
         return initial_active_node
 
-    def simulate(self, price_conf, alphas=None):
+    def simulate(self, price_conf, alphas=None, users=None):
         reward = np.zeros(self.n_products)
         buyers = np.zeros(self.n_products)
         offers = np.zeros(self.n_products)
-        
+        total_users = 0
         for cl in self.user_classes:
-            daily_users = 100 #random.randint(cl.min_daily_users, cl.max_daily_users)
+            if users==None:
+                daily_users = random.randint(cl.min_daily_users, cl.max_daily_users)
+            else :
+                daily_users = users
+            total_users = total_users + daily_users
             for i in range(daily_users):
                 # Se ci sono le alpha
                 if alphas:
@@ -253,7 +265,7 @@ class Simulator:
                     previous = np.append(
                         previous, previous_all[np.argwhere(e).reshape(-1)])
         # return history, previous
-        return reward, buyers/offers
+        return reward/total_users, buyers/offers , buyers, offers
 
 
 sim = Simulator()
@@ -265,10 +277,11 @@ opt = np.sum(opt_per_product)
 plt.figure(0)
 plt.xlabel("t")
 plt.ylabel("Regret")
-# plt.plot(T*[opt])
-# plt.plot(rewardsTS,'r')
-# plt.plot(rewardsUCB,'g')
-plt.plot(np.cumsum(opt - rewardsTS),'r')
-plt.plot(np.cumsum(opt - rewardsUCB),'g')
+#plt.plot(T*[opt])
+#plt.plot(rewardsTS,'r')
+#plt.plot(rewardsUCB,'g')
+#plt.plot(np.cumsum(T*[opt]),'b')
+plt.plot(np.cumsum(opt-rewardsTS),'r')
+plt.plot(np.cumsum(opt-rewardsUCB),'g')
 #plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
 plt.show()
