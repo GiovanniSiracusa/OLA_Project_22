@@ -23,11 +23,11 @@ import numpy as np
 #                             [0.4, 0.3, 0.2, 0.05],   #Pianta grassa
 #                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
-#prodotto costante lungo la linea ed arrotondato per eccesso alla seconda cifra decimale (il prdotto preferito dalla categoria parte da 0,75 come conversion rate gli altri 0,6)
+#prodotto costante lungo la linea (per ogni prodotto all'interno della categoria) ed arrotondato per eccesso alla seconda cifra decimale (il prdotto preferito dalla categoria parte da 0,75 come conversion rate gli altri 0,6)
 
 #FEMMINE <35 ANNI
 conversion_rates2 = np.array([[0.6, 0.48, 0.36, 0.24],  #Alexa                        prodotto price*concersion rate=12
-                             [0.6, 0.54, 0.5, 0.48],    #Quadro medium/high price      prodotto price*concersion rate=101.4
+                             [0.6, 0.54, 0.5, 0.48],    #Quadro medium/high price     prodotto price*concersion rate=101.4
                              [0.6, 0.58, 0.56, 0.42],   #Cantinetta per il vino       prodotto price*concersion rate=138
                              [0.6, 0.48, 0.42, 0.37],   #Pianta grassa                prodotto price*concersion rate=9.6
                              [0.75, 0.7, 0.65, 0.61]])  #Pouf                         prodotto price*concersion rate=48.75
@@ -39,7 +39,7 @@ conversion_rates3 = np.array([[0.6, 0.48, 0.36, 0.24],  #Alexa                  
                              [0.6, 0.56, 0.52, 0.49]])  #Pouf                         prodotto price*concersion rate=39
 #FEMMINE >35 ANNI
 conversion_rates4 = np.array([[0.6, 0.48, 0.36, 0.24],  #Alexa                        prodotto price*concersion rate=12
-                             [0.6, 0.54, 0.5, 0.48],    #Quadro medium/high price      prodotto price*concersion rate=101.4
+                             [0.6, 0.54, 0.5, 0.48],    #Quadro medium/high price     prodotto price*concersion rate=101.4
                              [0.6, 0.58, 0.56, 0.42],   #Cantinetta per il vino       prodotto price*concersion rate=138
                              [0.75, 0.6, 0.53, 0.47],   #Pianta grassa                prodotto price*concersion rate=12
                              [0.6, 0.56, 0.52, 0.49]])  #Pouf                         prodotto price*concersion rate=39
