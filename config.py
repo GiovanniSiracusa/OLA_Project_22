@@ -42,6 +42,8 @@ conversion_rates4 = np.array([[0.6, 0.5, 0.4, 0.3],  #Alexa
                              [0.6, 0.5, 0.4, 0.3],   #Pianta grassa
                              [0.6, 0.5, 0.4, 0.3]])  #Pouf
 
+cr_mean = (conversion_rates2+conversion_rates3+conversion_rates4)/3
+
 # DEFINIRE I PREZZI DI OGNI PRODOTTO
 prices = np.array([[20, 25, 34, 50],         #alexa
                   [169, 189, 205, 215],      #quadro

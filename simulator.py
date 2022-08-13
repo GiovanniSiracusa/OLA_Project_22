@@ -10,9 +10,10 @@ import numpy as np
 from pricing_env import UserClass
 import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
-#np.random.seed(seed=1)
+np.random.seed(seed=1234)
+random.seed(1234)
 
-T = 100
+T = 300
 
 class Simulator:
     n_products = 5
@@ -67,12 +68,15 @@ class Simulator:
 
             for t in range(time_horizon):
                 price_conf = learner.pull_arm(counter, max_price_conf)
-
+                reward = 0
                 if not price_conf.tolist() in price_conf_history.tolist():
                     price_conf_history = np.concatenate(
                         (price_conf_history, [price_conf]), axis=0)
-                    reward, cr, none, none = self.simulate(price_conf, users=100)
-                    # print(price_conf, np.round(reward,2), np.sum(reward))
+                    #reward, cr, none, none = self.simulate(price_conf, users=100)
+                    for i,j in enumerate(price_conf):
+                        reward += cf.margin[i,j]*cf.cr_mean[i,j]
+                        #print(reward)
+                    print(price_conf, np.round(reward,2), np.sum(reward))
                     # trova un nuovo max
                     if counter == -1:
                         max_reward = reward
@@ -95,15 +99,19 @@ class Simulator:
                         # print(temp_id, np.round(max_reward,2), np.sum(max_reward))
                     else:
                         break
-            print("Max price conf:", max_price_conf, "Max reward:", max_reward, "Max total:", np.sum(max_reward))
+            #print("Max price conf:", max_price_conf, "Max reward:", max_reward, "Max total:", np.sum(max_reward))
             print()
 
             if np.sum(max_reward) > np.sum(final_max_reward):
                 final_max_price_conf = max_price_conf
                 final_max_reward = max_reward
+
+        opt_reward, none, none, none = self.simulate(final_max_price_conf, users=100)
+
         print(
-            f"Final max reward {final_max_reward}\nFinal total reward {np.sum(final_max_reward)}\nFinal price conf {final_max_price_conf}\n")
-        return final_max_reward
+            f"Final max reward {opt_reward}\nOpt Reward {np.sum(opt_reward)}\n\nFinal price conf {final_max_price_conf}\n")
+
+        return opt_reward
 
 
     # Pullare un arm per ogni prodotto -> [0, 2, 1, 4, 0]
@@ -142,7 +150,7 @@ class Simulator:
                 #print("Reward: ", reward)
                 #print(price_conf, reward, cr)
 
-
+            for t in range(time_horizon):
                 #UCB
                 price_conf = np.array([ucb[i].pull_arm(cf.prices[i]) for i in range(self.n_products)])
                 reward, cr, buyers, offers = self.simulate(price_conf, users=100)
@@ -265,12 +273,13 @@ class Simulator:
                     previous = np.append(
                         previous, previous_all[np.argwhere(e).reshape(-1)])
         # return history, previous
-        return reward/total_users, buyers/offers , buyers, offers
+        return reward/offers, buyers/offers , buyers, offers
 
 
 sim = Simulator()
 opt_per_product = sim.step2()
 print("Optimal is", opt_per_product)
+
 rewardsTS, rewardsUCB = sim.step3(opt_per_product)
 
 opt = np.sum(opt_per_product)
