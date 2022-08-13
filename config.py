@@ -23,26 +23,24 @@ import numpy as np
 #                             [0.4, 0.3, 0.2, 0.05],   #Pianta grassa
 #                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
-#prodotto costante lungo la linea (per ogni prodotto all'interno della categoria) ed arrotondato per eccesso alla seconda cifra decimale (il prdotto preferito dalla categoria parte da 0,75 come conversion rate gli altri 0,6)
-
 #FEMMINE <35 ANNI
-conversion_rates2 = np.array([[0.6, 0.48, 0.36, 0.24],  #Alexa                        prodotto price*conversion rate=12
-                             [0.6, 0.54, 0.5, 0.48],    #Quadro medium/high price     prodotto price*conversion rate=101.4
-                             [0.6, 0.58, 0.56, 0.42],   #Cantinetta per il vino       prodotto price*conversion rate=138
-                             [0.6, 0.48, 0.42, 0.37],   #Pianta grassa                prodotto price*conversion rate=9.6
-                             [0.75, 0.7, 0.65, 0.61]])  #Pouf                         prodotto price*conversion rate=48.75
+conversion_rates2 = np.array([[0.6, 0.5, 0.4, 0.3],  #Alexa
+                             [0.6, 0.5, 0.4, 0.3],    #Quadro medium/high price
+                             [0.6, 0.5, 0.4, 0.3],   #Cantinetta per il vino
+                             [0.6, 0.5, 0.4, 0.3],   #Pianta grassa
+                             [0.6, 0.5, 0.4, 0.3]])  #Pouf
 #MASCHI >35 ANNI
-conversion_rates3 = np.array([[0.6, 0.48, 0.36, 0.24],  #Alexa                        prodotto price*conversion rate=12
-                             [0.6, 0.54, 0.5, 0.48],    #Quadro medium/high price     prodotto price*conversion rate=101.4
-                             [0.75, 0.72, 0.69, 0.53],  #Cantinetta per il vino       prodotto price*conversion rate=172.5
-                             [0.6, 0.48, 0.42, 0.37],   #Pianta grassa                prodotto price*conversion rate=9.6
-                             [0.6, 0.56, 0.52, 0.49]])  #Pouf                         prodotto price*conversion rate=39
+conversion_rates3 = np.array([[0.6, 0.5, 0.4, 0.3],  #Alexa
+                             [0.6, 0.5, 0.4, 0.3],    #Quadro medium/high price
+                             [0.6, 0.5, 0.4, 0.3],   #Cantinetta per il vino
+                             [0.6, 0.5, 0.4, 0.3],   #Pianta grassa
+                             [0.6, 0.5, 0.4, 0.3]])  #Pouf
 #FEMMINE >35 ANNI
-conversion_rates4 = np.array([[0.6, 0.48, 0.36, 0.24],  #Alexa                        prodotto price*conversion rate=12
-                             [0.6, 0.54, 0.5, 0.48],    #Quadro medium/high price     prodotto price*conversion rate=101.4
-                             [0.6, 0.58, 0.56, 0.42],   #Cantinetta per il vino       prodotto price*conversion rate=138
-                             [0.75, 0.6, 0.53, 0.47],   #Pianta grassa                prodotto price*conversion rate=12
-                             [0.6, 0.56, 0.52, 0.49]])  #Pouf                         prodotto price*conversion rate=39
+conversion_rates4 = np.array([[0.6, 0.5, 0.4, 0.3],  #Alexa
+                             [0.6, 0.5, 0.4, 0.3],    #Quadro medium/high price
+                             [0.6, 0.5, 0.4, 0.3],   #Cantinetta per il vino
+                             [0.6, 0.5, 0.4, 0.3],   #Pianta grassa
+                             [0.6, 0.5, 0.4, 0.3]])  #Pouf
 
 # DEFINIRE I PREZZI DI OGNI PRODOTTO
 prices = np.array([[20, 25, 34, 50],         #alexa
