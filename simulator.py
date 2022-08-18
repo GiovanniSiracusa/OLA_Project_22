@@ -155,7 +155,7 @@ class Simulator:
                 price_conf = np.array([ucb[i].pull_arm(cf.prices[i]) for i in range(self.n_products)])
                 reward, cr, buyers, offers = self.simulate(price_conf, users=100)
                 for p in range(self.n_products):
-                    ucb[p].update(price_conf[p], cr[p])
+                    ucb[p].update(price_conf[p], cr[p],buyers[p], offers[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))
                 #print(t)
                 print("UCB: ",price_conf)

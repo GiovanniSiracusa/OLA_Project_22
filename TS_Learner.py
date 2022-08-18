@@ -9,7 +9,7 @@ class TS_Learner(Learner):
 
     def pull_arm(self,prices):
         b = np.random.beta(self.beta_parameters[:, 0], self.beta_parameters[:, 1])
-        print(b*prices)
+        #print(b*prices)
         idx = np.argmax(b*prices)
         return idx
 
