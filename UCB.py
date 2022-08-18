@@ -7,9 +7,9 @@ class UCB(Learner):
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.array([np.inf]*n_arms)
 
-    def pull_arm(self,prices):
+    def pull_arm(self, margin):
         upper_conf = self.empirical_means + self.confidence
-        return np.argmax(upper_conf*prices)
+        return np.argmax(upper_conf*margin)
         #return np.random.choice(np.where(upper_conf == upper_conf.max()))
 
     def update(self, pull_arm,reward, buyers,offers):

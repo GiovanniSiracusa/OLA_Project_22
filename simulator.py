@@ -111,7 +111,7 @@ class Simulator:
         print(
             f"Final max reward {opt_reward}\nOpt Reward {np.sum(opt_reward)}\n\nFinal price conf {final_max_price_conf}\n")
 
-        return opt_reward
+        return opt_reward, final_max_price_conf
 
 
     # Pullare un arm per ogni prodotto -> [0, 2, 1, 4, 0]
@@ -120,7 +120,7 @@ class Simulator:
     # E calcolare il reward di ogni prodotto
     # Aggiornare le beta
     
-    def step3(self, opt):
+    def step3(self):
         n_experiments = 1
         time_horizon = T
 
@@ -137,7 +137,7 @@ class Simulator:
 
             for t in range(time_horizon):
                 # TS Learner
-                price_conf = np.array([ts[i].pull_arm(cf.prices[i]) for i in range(self.n_products)])
+                price_conf = np.array([ts[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
                 reward, cr, buyers, offers = self.simulate(price_conf,users=100)
                 for p in range(self.n_products):
                     for i in range(0,buyers[p].astype(int)):
@@ -152,7 +152,7 @@ class Simulator:
 
             for t in range(time_horizon):
                 #UCB
-                price_conf = np.array([ucb[i].pull_arm(cf.prices[i]) for i in range(self.n_products)])
+                price_conf = np.array([ucb[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
                 reward, cr, buyers, offers = self.simulate(price_conf, users=100)
                 for p in range(self.n_products):
                     ucb[p].update(price_conf[p], cr[p],buyers[p], offers[p])
@@ -176,7 +176,7 @@ class Simulator:
 
         return initial_active_node
 
-    def simulate(self, price_conf, alphas=None, users=None):
+    def simulate(self, price_conf, alphas=None, users=None, random_items_sold = False):
         reward = np.zeros(self.n_products)
         buyers = np.zeros(self.n_products)
         offers = np.zeros(self.n_products)
@@ -192,7 +192,8 @@ class Simulator:
                 if alphas:
                     initial_active_node = self.initial_node(alphas)
                 else:
-                    initial_active_node = self.initial_node(cl.alphas)
+                    #initial_active_node = self.initial_node(cl.alphas)
+                    initial_active_node = self.initial_node(None)
 
                 if all(initial_active_node == 0):
                     continue
@@ -221,7 +222,11 @@ class Simulator:
                         buyers[idx_active] += 1
 
                         # Calcola il reward per tot item comprati
-                        items_sold = 1 #random.randint(1, cl.max_sold_items)
+                        if (random_items_sold):
+                            items_sold = 1 + np.random.randint(0, 4)
+                        else:
+                            items_sold = 1
+                            
                         reward[idx_active] += cf.margin[idx_active,
                                                     price_conf[idx_active]] * items_sold
 
@@ -273,16 +278,17 @@ class Simulator:
                     previous = np.append(
                         previous, previous_all[np.argwhere(e).reshape(-1)])
         # return history, previous
-        return reward/offers, buyers/offers , buyers, offers
+        return reward/total_users, buyers/offers , buyers, offers
 
 
 sim = Simulator()
-opt_per_product = sim.step2()
-print("Optimal is", opt_per_product)
+opt_per_product, max_price_conf = sim.step2()
+rewardsTS, rewardsUCB = sim.step3()
 
-rewardsTS, rewardsUCB = sim.step3(opt_per_product)
 
 opt = np.sum(opt_per_product)
+print("Optimal is", opt)
+print("Max price conf", max_price_conf)
 plt.figure(0)
 plt.xlabel("t")
 plt.ylabel("Regret")

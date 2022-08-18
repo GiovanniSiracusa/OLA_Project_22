@@ -7,10 +7,12 @@ class TS_Learner(Learner):
         super().__init__(n_arms)
         self.beta_parameters = np.ones((n_arms,2))
 
-    def pull_arm(self,prices):
+    def pull_arm(self, margin):
         b = np.random.beta(self.beta_parameters[:, 0], self.beta_parameters[:, 1])
-        #print(b*prices)
-        idx = np.argmax(b*prices)
+
+        print(b*margin)
+        idx = np.argmax(b*margin)
+
         return idx
 
     def update(self, pulled_arm, reward):
