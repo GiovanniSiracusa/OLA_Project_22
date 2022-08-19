@@ -64,6 +64,8 @@ alphas2 = np.array([0.1, 0.185, 0.11, 0.06, 0.185, 0.36])    #FEMMINE <35       
 alphas3 = np.array([0.15, 0.175, 0.1, 0.35, 0.175, 0.05])    #MASCHI >35
 alphas4 = np.array([0.1, 0.06, 0.11, 0.185, 0.36, 0.185])    #FEMMINE >35
 
+alphas_mean = (alphas2 + alphas3 + alphas4)/3
+
 #min_daily_users1 = 100
 #max_daily_users1 = 500
 min_daily_users2 = 100
@@ -74,9 +76,11 @@ min_daily_users4 = 100
 max_daily_users4 = 200
 
 #max_sold_items1 = 5
-max_sold_items2 = 5
-max_sold_items3 = 5
-max_sold_items4 = 5
+sold_items2 = np.array([2, 2, 2, 2, 2])
+sold_items3 = np.array([2, 2, 2, 2, 2])
+sold_items4 = np.array([2, 2, 2, 2, 2])
+sold_items_mean = (sold_items2+sold_items3+sold_items4)/3
+
 
 # DEFINIRE PROBABILITA DI PASSARE DA UN PRODOTTO A UN ALTRO PER OGNI CLASSE DI UTENTI
 
@@ -117,4 +121,24 @@ graph_probs4 = np.array([[0, 0.0, 0.0, 0.0, 0.0],
                         [0.0, 0, 0.3, 0.2, 0.0],
                         [0.4, 0.3, 0, 0.2, 0.3],
                         [0.8, 0.7, 0.6, 0.0, 0.6],      #riga più alta perché prodotto che soddisfa di più la categoria
+                        [0.0, 0.0, 0.0, 0.0, 0.0]]).T
+
+l = 0.8
+
+lambda_mat2 = np.array([[0.0, 0.0, 0.0, 1, l],
+                        [1.0, 0.0, 1, 0.0, 1],
+                        [0.0, 0.0, 0.0, 0.0, 0.0],
+                        [0.0, l , 0.0, 0.0, 0.0],
+                        [l , 1.0, l , l , 0.0]]).T 
+
+lambda_mat3 = np.array([[0, 0.0, l, l, 1],
+                        [0.0, 0, 1, 0.0, 0.0],
+                        [1.0, 1, 0, 1, l],       #riga più alta perché prodotto che soddisfa di più la categoria
+                        [0.0, l, 0.0, 0, 0.0],
+                        [l, 0.0, 0.0, 0.0, 0]]).T
+
+lambda_mat4 = np.array([[0, 0.0, 0.0, 0.0, 0.0],
+                        [0.0, 0, 1, 1, 0.0],
+                        [1, l, 0, l, 1],
+                        [l, 1, l, 0.0, l],      #riga più alta perché prodotto che soddisfa di più la categoria
                         [0.0, 0.0, 0.0, 0.0, 0.0]]).T

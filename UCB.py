@@ -12,7 +12,7 @@ class UCB(Learner):
         return np.argmax(upper_conf*margin)
         #return np.random.choice(np.where(upper_conf == upper_conf.max()))
 
-    def update(self, pull_arm,reward, buyers,offers):
+    def update(self, pull_arm, reward, buyers, offers):
         self.t +=1
         for i in range(0, buyers.astype(int)):
             self.empirical_means[pull_arm] = (self.empirical_means[pull_arm] * (self.t - 1) + 1) / self.t
