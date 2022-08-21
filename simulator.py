@@ -410,7 +410,7 @@ class Simulator:
 sim = Simulator()
 opt_per_product, max_price_conf = sim.step2()
 #rewardsTS, rewardsUCB = sim.step3()
-# rewardsTS, rewardsUCB = sim.step4()
+#rewardsTS, rewardsUCB = sim.step4()
 rewardsTS, rewardsUCB = sim.step5()
 
 
