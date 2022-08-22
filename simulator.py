@@ -13,7 +13,7 @@ from scipy.ndimage import uniform_filter1d
 np.random.seed(seed=1234)
 random.seed(1234)
 
-T = 100
+T = 300
 
 class Simulator:
     n_products = 5
@@ -47,7 +47,45 @@ class Simulator:
     )
 
     user_classes = [u1, u2, u3]
+    
+    def dec_to_base(self,num,base=4):  #Maximum base - 36
+        base_num = ""
+        while num>0:
+            dig = int(num%base)
+            if dig<10:
+                base_num += str(dig)
+            else:
+                base_num += chr(ord('A')+dig-10)  #Using uppercase letters
+            num //= base
 
+        base_num = base_num[::-1]  #To reverse the string
+
+        return np.array([int(a) for a in str(base_num).zfill(self.n_products)])
+
+    def bruteforce(self):
+        max = 0
+        best_conf = None
+        for i in range(self.n_prices**self.n_products):
+            conf = self.dec_to_base(i)
+            reward = 0
+            for p, c in enumerate(conf):
+                reward += cf.alphas_mean[p+1]*cf.cr_mean[p][c]*cf.margin[p][c]
+            if reward > max:
+                max = reward
+                best_conf = conf
+        
+        opt = 0
+        for i in range(100):
+            print("Bruteforce:", i)
+            reward = self.simulate(best_conf, users=100)[0]
+            opt += reward
+        opt /= 100
+
+        opt = np.sum(opt)
+        print(f"Bruteforce\n Max reward: {opt}\n Best configuration: {best_conf}")
+        return opt, best_conf
+
+    
     def step2(self):
         n_experiments = 1
         time_horizon = 100
@@ -133,7 +171,7 @@ class Simulator:
         for e in range(n_experiments):
             #learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
             ts = [TS_Learner(self.n_prices, cf.alphas_mean[i], cf.sold_items_mean[i]) for i in range(self.n_products)]
-            ucb = [UCB(self.n_prices) for i in range(self.n_products)]
+            ucb = [UCB(self.n_prices, cf.alphas_mean[i], cf.sold_items_mean[i]) for i in range(self.n_products)]
 
             print("Exp:", e)
 
@@ -160,7 +198,7 @@ class Simulator:
                     ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))
                 #print(t)
-                #print("UCB: ",price_conf)
+                print("UCB: ",price_conf)
 
                 #print("Reward: ", reward)
 
@@ -202,10 +240,10 @@ class Simulator:
                 price_conf = np.array([ucb[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
                 reward, buyers, offers, alphas, items,_,_ = self.simulate(price_conf, users=100)
                 for p in range(self.n_products):
-                    ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p])
+                    ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], alphas[p], items[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))
                 #print(t)
-                #print("UCB: ",price_conf)
+                print("UCB: ",price_conf)
 
                 #print("Reward: ", reward)
 
@@ -253,10 +291,10 @@ class Simulator:
                 price_conf = np.array([ucb[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
                 reward, buyers, offers, alphas, items, history, previous = self.simulate(price_conf, users=100)
                 for p in range(self.n_products):
-                    ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p])
+                    ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], graph=graph_prob[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))
                 #print(t)
-                #print("UCB: ",price_conf)
+                print("UCB: ",price_conf)
 
                 #print("Reward: ", reward)
 
@@ -407,24 +445,26 @@ class Simulator:
         return reward/total_users, buyers, offers, alphas/total_users, items/buyers, total_history, total_previous
 
 
-sim = Simulator()
-opt_per_product, max_price_conf = sim.step2()
-#rewardsTS, rewardsUCB = sim.step3()
-#rewardsTS, rewardsUCB = sim.step4()
-rewardsTS, rewardsUCB = sim.step5()
+if __name__=='__main__':
+    sim = Simulator()
+    opt, max_price_conf = sim.bruteforce()
+    #opt_per_product, max_price_conf = sim.step2()
+    #rewardsTS, rewardsUCB = sim.step3()
+    #rewardsTS, rewardsUCB = sim.step4()
+    rewardsTS, rewardsUCB = sim.step5()
 
 
-opt = np.sum(opt_per_product)
-print("Optimal is", opt)
-print("Max price conf", max_price_conf)
-plt.figure(0)
-plt.xlabel("t")
-plt.ylabel("Regret")
-#plt.plot(T*[opt])
-#plt.plot(rewardsTS,'r')
-#plt.plot(rewardsUCB,'g')
-#plt.plot(np.cumsum(T*[opt]),'b')
-plt.plot(np.cumsum(opt-rewardsTS),'r')
-plt.plot(np.cumsum(opt-rewardsUCB),'g')
-#plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
-plt.show()
+    #opt = np.sum(opt_per_product)
+    print("Optimal is", opt)
+    print("Max price conf", max_price_conf)
+    plt.figure(0)
+    plt.xlabel("t")
+    plt.ylabel("Regret")
+    #plt.plot(T*[opt])
+    #plt.plot(rewardsTS,'r')
+    #plt.plot(rewardsUCB,'g')
+    #plt.plot(np.cumsum(T*[opt]),'b')
+    plt.plot(np.cumsum(opt-rewardsTS),'r')
+    plt.plot(np.cumsum(opt-rewardsUCB),'g')
+    #plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
+    plt.show()
