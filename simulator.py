@@ -181,7 +181,7 @@ class Simulator:
             for t in range(time_horizon):
                 # TS Learner
                 price_conf = np.array([ts[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
-                reward, buyers, offers, _, _, _, _ = self.simulate(price_conf, users=100)
+                reward, buyers, offers, _, _, _, _ = self.simulate(price_conf)
                 for p in range(self.n_products):
                     ts[p].update(price_conf[p], reward[p], buyers[p], offers[p])
                 rewardsTS = np.append(rewardsTS, np.sum(reward))
@@ -193,7 +193,7 @@ class Simulator:
             for t in range(time_horizon):
                 #UCB
                 price_conf = np.array([ucb[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
-                reward, buyers, offers, _, _,_,_= self.simulate(price_conf, users=100)
+                reward, buyers, offers, _, _,_,_= self.simulate(price_conf)
                 for p in range(self.n_products):
                     ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))
@@ -226,7 +226,7 @@ class Simulator:
             for t in range(time_horizon):
                 # TS Learner
                 price_conf = np.array([ts[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
-                reward, buyers, offers, alphas, items,_,_ = self.simulate(price_conf, users=100)
+                reward, buyers, offers, alphas, items,_,_ = self.simulate(price_conf)
                 for p in range(self.n_products):
                     ts[p].update(price_conf[p], reward[p], buyers[p], offers[p], alphas[p], items[p])
                 rewardsTS = np.append(rewardsTS, np.sum(reward))
@@ -238,7 +238,7 @@ class Simulator:
             for t in range(time_horizon):
                 #UCB
                 price_conf = np.array([ucb[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
-                reward, buyers, offers, alphas, items,_,_ = self.simulate(price_conf, users=100)
+                reward, buyers, offers, alphas, items,_,_ = self.simulate(price_conf)
                 for p in range(self.n_products):
                     ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], alphas[p], items[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))
@@ -274,7 +274,7 @@ class Simulator:
             for t in range(time_horizon):
                 # TS Learner
                 price_conf = np.array([ts[i].pull_arm_step5(cf.margin[i]) for i in range(self.n_products)])
-                reward, buyers, offers, alphas, items, history, previous = self.simulate(price_conf, users=100)
+                reward, buyers, offers, alphas, items, history, previous = self.simulate(price_conf)
                 graph_prob = self.estimate_probabilities(history, previous)
                 #print(graph_prob)
 
@@ -289,7 +289,7 @@ class Simulator:
             for t in range(time_horizon):
                 #UCB
                 price_conf = np.array([ucb[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
-                reward, buyers, offers, alphas, items, history, previous = self.simulate(price_conf, users=100)
+                reward, buyers, offers, alphas, items, history, previous = self.simulate(price_conf)
                 for p in range(self.n_products):
                     ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], graph=graph_prob[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))

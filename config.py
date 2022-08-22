@@ -68,12 +68,12 @@ alphas_mean = (alphas2 + alphas3 + alphas4)/3
 
 #min_daily_users1 = 100
 #max_daily_users1 = 500
-min_daily_users2 = 100
-max_daily_users2 = 200
-min_daily_users3 = 100
-max_daily_users3 = 200
-min_daily_users4 = 100
-max_daily_users4 = 200
+min_daily_users2 = 50
+max_daily_users2 = 150
+min_daily_users3 = 50
+max_daily_users3 = 150
+min_daily_users4 = 50
+max_daily_users4 = 150
 
 #max_sold_items1 = 5
 sold_items2 = np.array([2, 2, 2, 2, 2])
