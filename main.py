@@ -8,28 +8,28 @@ def main():
         step = int(input("Select the step [2-3-4-5-6-7]: "))
 
         if step == 2:
+            opt, best_price_conf = sim.bruteforce()
             opt_per_product, max_price_conf = sim.step2()
             print("\nRevenue provided by the greedy algorithm:", np.sum(opt_per_product),
                   "\nOptimal price configuration", max_price_conf)
+            print("\nRevenue provided by the brute force algorithm:", opt,
+                  "\nOptimal price configuration", best_price_conf)
             break
 
         elif step == 3:
-            opt_per_product, max_price_conf = sim.step2()
-            opt = np.sum(opt_per_product)
+            opt, best_price_conf = sim.bruteforce()
             rewardsTS, rewardsUCB = sim.step3()
             plot_regret(opt, rewardsTS, rewardsUCB)
             break
 
         elif step == 4:
-            opt_per_product, max_price_conf = sim.step2()
-            opt = np.sum(opt_per_product)
+            opt, best_price_conf = sim.bruteforce()
             rewardsTS, rewardsUCB = sim.step4()
             plot_regret(opt, rewardsTS, rewardsUCB)
             break
 
         elif step == 5:
-            opt_per_product, max_price_conf = sim.step2()
-            opt = np.sum(opt_per_product)
+            opt, best_price_conf = sim.bruteforce()
             rewardsTS, rewardsUCB = sim.step5()
             plot_regret(opt, rewardsTS, rewardsUCB)
             break
