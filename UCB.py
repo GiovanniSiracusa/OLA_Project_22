@@ -39,7 +39,10 @@ class UCB(Learner):
         for i in range(0, buyers.astype(int)):
             self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + 1) / self.t
         for i in range(0, (offers.astype(int) - buyers.astype(int))):
-            self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm]* (self.t-1) + 0)/self.t
+            self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm]* (self.t - 1) + 0)/self.t
+
+        #self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t-1) + buyers/offers)/self.t
+
 
         for a in range(self.n_arms):
             n_samples = len(self.rewards_per_arm[a])
@@ -55,3 +58,15 @@ class UCB(Learner):
         if np.all(graph != None):
             self.arm_counter[pulled_arm] += 1
             self.graph[pulled_arm] = (self.graph[pulled_arm]*(self.arm_counter[pulled_arm] - 1) + graph)/self.arm_counter[pulled_arm]
+
+    
+    def plot_distribution(self):
+        from scipy.stats import beta
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots(1, 1)
+
+        colors=['r', 'g', 'b', 'm']
+        x = [0, 1, 2, 3]
+        #y = [(i,j) for i,j in zip(self.empirical_means, self.empirical_means+self.confidence)]
+        #print(y)
+        plt.plot((x,x), (self.empirical_means, self.empirical_means+self.confidence))

@@ -167,6 +167,9 @@ class Simulator:
         n_experiments = 1
         time_horizon = T
 
+        rewardsTS_exp = []
+        rewardsUCB_exp = []
+
 
         for e in range(n_experiments):
             #learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
@@ -197,15 +200,18 @@ class Simulator:
                 for p in range(self.n_products):
                     ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p])
                 rewardsUCB = np.append(rewardsUCB, np.sum(reward))
-                #print(t)
+                print(t)
                 print("UCB: ",price_conf)
 
                 #print("Reward: ", reward)
-
-            ts[1].plot_distribution()
-            print("Rewards", rewardsTS)
+            
+            rewardsTS_exp.append(rewardsTS)
+            rewardsUCB_exp.append(rewardsUCB)
+            #ts[1].plot_distribution()
+            #ucb[1].plot_distribution()
+            #print("Rewards", rewardsTS)
             #print("Rewards", rewardsUCB)
-        return rewardsTS, rewardsUCB
+        return rewardsTS_exp, rewardsUCB_exp
 
 
     def step4(self):
@@ -449,9 +455,10 @@ if __name__=='__main__':
     sim = Simulator()
     opt, max_price_conf = sim.bruteforce()
     #opt_per_product, max_price_conf = sim.step2()
-    #rewardsTS, rewardsUCB = sim.step3()
+    rewardsTS_exp, rewardsUCB_exp = sim.step3()
+    print(rewardsTS_exp)
     #rewardsTS, rewardsUCB = sim.step4()
-    rewardsTS, rewardsUCB = sim.step5()
+    #rewardsTS, rewardsUCB = sim.step5()
 
 
     #opt = np.sum(opt_per_product)
@@ -464,7 +471,7 @@ if __name__=='__main__':
     #plt.plot(rewardsTS,'r')
     #plt.plot(rewardsUCB,'g')
     #plt.plot(np.cumsum(T*[opt]),'b')
-    plt.plot(np.cumsum(opt-rewardsTS),'r')
-    plt.plot(np.cumsum(opt-rewardsUCB),'g')
+    plt.plot(np.cumsum(np.mean(opt-rewardsTS_exp, axis=0)),'r')
+    plt.plot(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)),'g')
     #plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
     plt.show()
