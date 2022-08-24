@@ -76,7 +76,7 @@ min_daily_users4 = 50
 max_daily_users4 = 150
 
 #max_sold_items1 = 5
-sold_items2 = np.array([2, 2, 2, 2, 2])
+sold_items2 = np.array([2, 2, 2, 2, 2])      #Media di items venduti (la media viene sommata +1)
 sold_items3 = np.array([2, 2, 2, 2, 2])
 sold_items4 = np.array([2, 2, 2, 2, 2])
 sold_items_mean = (sold_items2+sold_items3+sold_items4)/3
