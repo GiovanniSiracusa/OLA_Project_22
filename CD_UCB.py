@@ -1,7 +1,7 @@
-import UCB
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 from CUSUM import CUSUM
+from UCB import UCB
 
 class CD_UCB(UCB):
     def __init__(self, n_arms, M=100, eps=0.05, h=20, alpha=0.01):
@@ -17,7 +17,7 @@ class CD_UCB(UCB):
         else:
             return np.random.randint(0, 4)
 
-    def update(self, pulled_arm, reward):
+    def update(self, pulled_arm, reward, buyers, offers):
         self.t +=1
         if self.change_detection[pulled_arm].update(reward):
             self.detections[pulled_arm].append(self.t)

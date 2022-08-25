@@ -1,8 +1,10 @@
 import random
 from typing import List
+from CD_UCB import CD_UCB
 
 from Gaussian_TS_Learner import Gaussian_TS_Learner
 from Greedy_Learner import Greedy_Learner
+from SW_UCB import SW_UCB
 from TS_Learner import TS_Learner
 from UCB import UCB
 import config as cf
@@ -13,7 +15,7 @@ from scipy.ndimage import uniform_filter1d
 np.random.seed(seed=1234)
 random.seed(1234)
 
-T = 300
+T = 100
 
 class Simulator:
     n_products = 5
@@ -218,6 +220,8 @@ class Simulator:
         n_experiments = 1
         time_horizon = T
 
+        rewardsTS_exp = []
+        rewardsUCB_exp = []
 
         for e in range(n_experiments):
             #learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
@@ -257,15 +261,20 @@ class Simulator:
                 print(i)
                 print("Alpha:", ts[i].alpha)
                 print("Items:", ts[i].items)
-                
-            print("Rewards", rewardsTS)
+            
+            rewardsTS_exp.append(rewardsTS)
+            rewardsUCB_exp.append(rewardsUCB)
+
+            #print("Rewards", rewardsTS)
             #print("Rewards", rewardsUCB)
-        return rewardsTS, rewardsUCB
+        return rewardsTS_exp, rewardsUCB_exp
 
     def step5(self):
         n_experiments = 1
         time_horizon = T
 
+        rewardsTS_exp = []
+        rewardsUCB_exp = []
 
         for e in range(n_experiments):
             #learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
@@ -304,9 +313,61 @@ class Simulator:
 
                 #print("Reward: ", reward)
 
-            print("Rewards", rewardsTS)
+            rewardsTS_exp.append(rewardsTS)
+            rewardsUCB_exp.append(rewardsUCB)
+            #print("Rewards", rewardsTS)
             #print("Rewards", rewardsUCB)
-        return rewardsTS, rewardsUCB
+        return rewardsTS_exp, rewardsUCB_exp
+
+    def step6(self):
+        n_experiments = 1
+        time_horizon = T
+
+        rewardsTS_exp = []
+        rewardsUCB_exp = []
+
+        for e in range(n_experiments):
+            #learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
+            sw = [SW_UCB(self.n_prices, 20, cf.alphas_mean[i], cf.sold_items_mean[i]) for i in range(self.n_products)]
+            cd = [CD_UCB(self.n_prices) for i in range(self.n_products)]
+
+            print("Exp:", e)
+
+            rewardsTS = np.array([])
+            rewardsUCB = np.array([])
+
+            for t in range(time_horizon):
+                # TS Learner
+                price_conf = np.array([sw[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
+                reward, buyers, offers, alphas, items, history, previous = self.simulate(price_conf)
+                graph_prob = self.estimate_probabilities(history, previous)
+                #print(graph_prob)
+
+                for p in range(self.n_products):
+                    sw[p].update(price_conf[p], reward[p], buyers[p], offers[p])
+                rewardsTS = np.append(rewardsTS, np.sum(reward))
+                print(t)
+                print("TS: ", price_conf)
+                #print("Reward: ", reward)
+                #print(price_conf, reward, cr)
+
+            for t in range(time_horizon):
+                #UCB
+                price_conf = np.array([cd[i].pull_arm(cf.margin[i]) for i in range(self.n_products)])
+                reward, buyers, offers, alphas, items, history, previous = self.simulate(price_conf)
+                for p in range(self.n_products):
+                    cd[p].update(price_conf[p], reward[p], buyers[p], offers[p])
+                rewardsUCB = np.append(rewardsUCB, np.sum(reward))
+                #print(t)
+                print("UCB: ",price_conf)
+
+                #print("Reward: ", reward)
+
+            rewardsTS_exp.append(rewardsTS)
+            rewardsUCB_exp.append(rewardsUCB)
+            #print("Rewards", rewardsTS)
+            #print("Rewards", rewardsUCB)
+        return rewardsTS_exp, rewardsUCB_exp
 
     def estimate_probabilities(self, dataset, previous):
         credits = np.zeros((self.n_products, self.n_products))
@@ -455,10 +516,11 @@ if __name__=='__main__':
     sim = Simulator()
     opt, max_price_conf = sim.bruteforce()
     #opt_per_product, max_price_conf = sim.step2()
-    rewardsTS_exp, rewardsUCB_exp = sim.step3()
-    print(rewardsTS_exp)
-    #rewardsTS, rewardsUCB = sim.step4()
-    #rewardsTS, rewardsUCB = sim.step5()
+    #rewardsTS_exp, rewardsUCB_exp = sim.step3()
+    #rewardsTS_exp, rewardsUCB_exp = sim.step4()
+    #rewardsTS_exp, rewardsUCB_exp = sim.step5()
+    rewardsTS_exp, rewardsUCB_exp= sim.step6()
+    #print(rewardsTS_exp)
 
 
     #opt = np.sum(opt_per_product)
