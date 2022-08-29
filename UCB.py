@@ -36,12 +36,13 @@ class UCB(Learner):
 
     def update(self, pulled_arm, reward, buyers, offers, alpha=None, items=None, graph=None):
         self.t +=1
-        for i in range(0, buyers.astype(int)):
-            self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + 1) / self.t
-        for i in range(0, (offers.astype(int) - buyers.astype(int))):
-            self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm]* (self.t - 1) + 0)/self.t
+        #for i in range(0, buyers.astype(int)):
+        #    self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + 1) / self.t
+        #for i in range(0, (offers.astype(int) - buyers.astype(int))):
+        #    self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm]* (self.t - 1) + 0)/self.t
 
-        #self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t-1) + buyers/offers)/self.t
+        #self.empirical_means[pulled_arm] = np.mean(self.rewards_per_arm[pulled_arm])
+        self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t-1) + buyers/offers)/self.t
 
 
         for a in range(self.n_arms):

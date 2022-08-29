@@ -18,6 +18,18 @@ random.seed(1234)
 T = 100
 
 class Simulator:
+
+    def __init__(self,config_file=0):
+        if config_file==0:
+            import config as cf
+        if config_file==1:
+            import config1 as cf
+        if config_file==2:
+            import config1 as cf
+        if config_file==3:
+            import config2 as cf
+
+
     n_products = 5
     n_prices = 4
     l = 0.8
