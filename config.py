@@ -16,6 +16,8 @@ import numpy as np
 #PRODOTTI CHE SODDISFANO CATEGORIE CON UN PARAMETRO IN COMUNE ED IL QUADRO SONO PREFRITI A PRODOTTI CHE NON LO FANNO
 #esempio m<35 -->  pouf (<35) = cantinetta (maschio) > quadro > pianta
 
+#uomini e donna < 35 unica categoria --> modificare le percentuali
+
 #MASCHI <35 ANNI
 #conversion_rates1 = np.array([[0.9, 0.75, 0.6, 0.3],  #Alexa
 #                             [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
