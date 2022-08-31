@@ -26,23 +26,23 @@ import numpy as np
 #                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
 #FEMMINE <35 ANNI
-conversion_rates2 = np.array([[0.6, 0.5, 0.4, 0.3],  #Alexa
-                             [0.6, 0.5, 0.4, 0.3],    #Quadro medium/high price
-                             [0.6, 0.5, 0.4, 0.3],   #Cantinetta per il vino
-                             [0.6, 0.5, 0.4, 0.3],   #Pianta grassa
-                             [0.6, 0.5, 0.4, 0.3]])  #Pouf
+conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
+                             [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
+                             [0.4, 0.3, 0.2, 0.05],   #Cantinetta per il vino
+                             [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
+                             [0.9, 0.75, 0.6, 0.3]])  #Pouf
 #MASCHI >35 ANNI
-conversion_rates3 = np.array([[0.6, 0.5, 0.4, 0.3],  #Alexa
-                             [0.6, 0.5, 0.4, 0.3],    #Quadro medium/high price
-                             [0.6, 0.5, 0.4, 0.3],   #Cantinetta per il vino
-                             [0.6, 0.5, 0.4, 0.3],   #Pianta grassa
-                             [0.6, 0.5, 0.4, 0.3]])  #Pouf
+conversion_rates3 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
+                             [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
+                             [0.9, 0.75, 0.6, 0.3],   #Cantinetta per il vino
+                             [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
+                             [0.4, 0.3, 0.2, 0.05]])  #Pouf
 #FEMMINE >35 ANNI
-conversion_rates4 = np.array([[0.6, 0.5, 0.4, 0.3],  #Alexa
-                             [0.6, 0.5, 0.4, 0.3],    #Quadro medium/high price
-                             [0.6, 0.5, 0.4, 0.3],   #Cantinetta per il vino
-                             [0.6, 0.5, 0.4, 0.3],   #Pianta grassa
-                             [0.6, 0.5, 0.4, 0.3]])  #Pouf
+conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05],  #Alexa
+                             [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
+                             [0.6, 0.45, 0.3, 0.1],   #Cantinetta per il vino
+                             [0.9, 0.75, 0.6, 0.3],    #Pianta grassa
+                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
 cr_mean = (conversion_rates2+conversion_rates3+conversion_rates4)/3
 

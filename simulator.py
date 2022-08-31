@@ -12,8 +12,8 @@ import numpy as np
 from pricing_env import UserClass
 import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
-np.random.seed(seed=1234)
-random.seed(1234)
+np.random.seed(seed=1111)
+random.seed(1111)
 
 T = 100
 
