@@ -40,7 +40,7 @@ conversion_rates4 = np.array([[0.6, 0.5, 0.4, 0.3],  #Alexa
                              [0.6, 0.5, 0.4, 0.3],    #Quadro medium/high price
                              [0.6, 0.5, 0.4, 0.3],   #Cantinetta per il vino
                              [0.6, 0.5, 0.4, 0.3],   #Pianta grassa
-                             [0.6, 0.5, 0.4, 0.31]])  #Pouf
+                             [0.6, 0.5, 0.4, 0.3]])  #Pouf
 
 cr_mean = (conversion_rates2+conversion_rates3+conversion_rates4)/3
 
