@@ -45,11 +45,11 @@ conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05],  #Alexa
 cr_mean = (conversion_rates2+conversion_rates3+conversion_rates4)/3
 
 # DEFINIRE I PREZZI DI OGNI PRODOTTO
-prices = np.array([[20, 25, 34, 50],         #alexa
-                  [169, 189, 205, 215],      #quadro
-                  [230, 240, 250, 330],      #cantinetta
-                  [16, 20, 23, 26],          #pianta
-                  [65, 70, 76, 80]])         #pouf
+prices = np.array([[22, 28, 37, 55],         #alexa
+                  [179, 200, 217, 228],      #quadro
+                  [244, 254, 265, 350],      #cantinetta
+                  [17, 21, 24, 28],          #pianta
+                  [69, 74, 81, 85]])         #pouf
 
 #alexa, quadro, cantinetta, pianta, pouf
 costs = np.array([[16], [88], [152], [4], [25]])
@@ -76,9 +76,9 @@ min_daily_users4 = 50
 max_daily_users4 = 150
 
 #max_sold_items1 = 5
-sold_items2 = np.array([2, 2, 2, 2, 2])      #Media di items venduti (la media viene sommata +1)
-sold_items3 = np.array([2, 2, 2, 2, 2])
-sold_items4 = np.array([2, 2, 2, 2, 2])
+sold_items2 = np.array([2.9, 2.1, 0.1, 1.2, 2.5])      #Media di items venduti (la media viene sommata +1)
+sold_items3 = np.array([0.8, 1.1, 1, 0.9, 0.6])
+sold_items4 = np.array([0.4, 0.8, 0.8, 3.1, 1.5])
 sold_items_mean = (sold_items2+sold_items3+sold_items4)/3
 
 
