@@ -23,20 +23,21 @@ import numpy as np
 #                             [0.4, 0.3, 0.2, 0.05],   #Pianta grassa
 #                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
+#riduzione dei conversion rate del 30% dovuto dalla crisi economica e quindi una tendenza al non acqiostare più alta su tutte le classi
 #FEMMINE <35 ANNI
-conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
+conversion_rates2 = 0.7*np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
                              [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
                              [0.4, 0.3, 0.2, 0.05],   #Cantinetta per il vino
                              [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
                              [0.9, 0.75, 0.6, 0.3]])  #Pouf
 #MASCHI >35 ANNI
-conversion_rates3 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
+conversion_rates3 = 0.7*np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
                              [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
                              [0.9, 0.75, 0.6, 0.3],   #Cantinetta per il vino
                              [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
                              [0.4, 0.3, 0.2, 0.05]])  #Pouf
 #FEMMINE >35 ANNI
-conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05],  #Alexa
+conversion_rates4 = 0.7*np.array([[0.4, 0.3, 0.2, 0.05],  #Alexa
                              [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
                              [0.6, 0.45, 0.3, 0.1],   #Cantinetta per il vino
                              [0.9, 0.75, 0.6, 0.3],    #Pianta grassa
