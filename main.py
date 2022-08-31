@@ -78,6 +78,16 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp,step=0):
     plt.plot(np.cumsum(np.mean(opt-rewardsTS_exp, axis=0)),'r',label=labels[0])
     plt.plot(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)),'g',label=labels[1])
     #plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
+
+    #x = np.arange(len(rewardsTS_exp[0]), dtype=float)
+    #y_ts=(np.cumsum(np.mean(opt-rewardsTS_exp, axis=0)))
+    #y_ucb=(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)))
+    #dev_ts=np.std(opt - rewardsTS_exp, axis=0)
+    #dev_ucb=np.std(opt - rewardsUCB_exp, axis=0)
+
+
+
+
     plt.legend()
     plt.show()
 

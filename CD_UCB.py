@@ -23,13 +23,15 @@ class CD_UCB(UCB):
             self.detections[pulled_arm].append(self.t)
             self.valid_rewards_per_arms[pulled_arm] = []
             self.change_detection[pulled_arm].reset()
-        self.update_observations(pulled_arm, reward)
+            print("!!!!!!!!!!CHANGE DETECTED!!!!!!!", self.t)
+        self.update_observations(pulled_arm, reward, buyers, offers)
         self.empirical_means[pulled_arm] = np.mean(self.valid_rewards_per_arms[pulled_arm])
+
         for a in range(self.n_arms):
             n_samples = len(self.rewards_per_arm[a])
             self.confidence[a] = (2 * np.log(self.t) / n_samples) ** 0.5 if n_samples > 0 else np.inf
 
-    def update_observations(self, pulled_arm, reward ):
+    def update_observations(self, pulled_arm, reward, buyers, offers):
         self.rewards_per_arm[pulled_arm].append(reward)
-        self.valid_rewards_per_arms[pulled_arm].append(reward)
+        self.valid_rewards_per_arms[pulled_arm].append(buyers/offers)
         self.collected_rewards = np.append(self.collected_rewards, reward)

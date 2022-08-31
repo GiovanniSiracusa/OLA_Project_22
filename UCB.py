@@ -6,6 +6,7 @@ class UCB(Learner):
         super().__init__(n_arms)
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.array([np.inf]*n_arms)
+        self.t = np.zeros(n_arms)
 
         if np.all(alpha != None): 
             self.alpha = alpha
@@ -26,7 +27,7 @@ class UCB(Learner):
 
     def pull_arm(self, margin):
         upper_conf = self.empirical_means + self.confidence
-        return np.argmax(upper_conf*margin*self.alpha*self.items)
+        return np.argmax(upper_conf)
         #return np.random.choice(np.where(upper_conf == upper_conf.max()))
 
     def pull_arm_step5(self, margin):
@@ -35,19 +36,20 @@ class UCB(Learner):
         return idx
 
     def update(self, pulled_arm, reward, buyers, offers, alpha=None, items=None, graph=None):
-        self.t +=1
-        for i in range(0, buyers.astype(int)):
-            self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + 1) / self.t
-        for i in range(0, (offers.astype(int) - buyers.astype(int))):
-            self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm]* (self.t - 1) + 0)/self.t
+        self.t[pulled_arm] += 1
+        #for i in range(0, buyers.astype(int)):
+        #    self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + 1) / self.t
+        #for i in range(0, (offers.astype(int) - buyers.astype(int))):
+        #    self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm]* (self.t - 1) + 0)/self.t
 
-        #self.empirical_means[pulled_arm] = np.mean(self.rewards_per_arm[pulled_arm])
-        #self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t-1) + buyers/offers)/self.t
+        self.empirical_means[pulled_arm] = np.mean(self.rewards_per_arm[pulled_arm])
+        #self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t[pulled_arm]-1) + buyers/offers)/self.t[pulled_arm]
 
 
         for a in range(self.n_arms):
-            n_samples = len(self.rewards_per_arm[a])
-            self.confidence[a] = (2*np.log(self.t)/n_samples)**0.5 if n_samples>0 else np.inf
+            #n_samples = len(self.rewards_per_arm[a])
+            n_samples = self.t[a]
+            self.confidence[a] = (2*np.log(np.sum(self.t))/n_samples)**0.5 if n_samples>0 else np.inf
         self.update_observations(pulled_arm,reward)
 
         if alpha != None:

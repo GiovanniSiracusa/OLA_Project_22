@@ -1,7 +1,7 @@
-from Learner import Learner
+from UCB import UCB
 import numpy as np
 
-class SW_UCB(Learner):
+class SW_UCB(UCB):
     def __init__(self, n_arms, window_size=20, alpha=None, items=None, graph=None):
         super().__init__(n_arms)
         self.empirical_means = np.zeros(n_arms)
@@ -36,6 +36,7 @@ class SW_UCB(Learner):
         self.pulled_arms = np.append(self.pulled_arms, np.array([[pulled_arm, buyers.astype(int), offers.astype(int)]]), axis=0)
         
         for arm in range(self.n_arms):
+            #self.empirical_means[arm] = np.mean(self.rewards_per_arm[arm][-self.window_size:])
             self.empirical_means[arm] = np.sum(self.pulled_arms[-self.window_size:, 1])
             self.empirical_means[arm] /= np.sum(self.pulled_arms[-self.window_size:, 2])
             n_samples = np.sum(self.pulled_arms[-self.window_size: , 0] == arm)
