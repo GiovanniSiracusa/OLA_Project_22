@@ -7,6 +7,7 @@ class UCB(Learner):
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.array([np.inf]*n_arms)
         self.pulls = np.zeros(n_arms)
+        self.total_offers = np.zeros(n_arms)
 
         if np.all(alpha != None): 
             self.alpha = alpha
@@ -27,7 +28,7 @@ class UCB(Learner):
 
     def pull_arm(self, margin):
         upper_conf = self.empirical_means + self.confidence
-        return np.argmax(upper_conf*margin)
+        return np.argmax(upper_conf*margin*self.alpha*self.items)
         #return np.random.choice(np.where(upper_conf == upper_conf.max()))
 
     def pull_arm_step5(self, margin):
@@ -38,18 +39,20 @@ class UCB(Learner):
     def update(self, pulled_arm, reward, buyers, offers, alpha=None, items=None, graph=None):
         self.t += 1
         self.pulls[pulled_arm] += 1
+        self.total_offers[pulled_arm] += offers
+
         # for i in range(0, buyers.astype(int)):
         #    self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + 1) / self.t
         # for i in range(0, (offers.astype(int) - buyers.astype(int))):
         #    self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm]* (self.t - 1) + 0)/self.t
 
-        self.empirical_means[pulled_arm] = np.mean(self.rewards_per_arm[pulled_arm])
-        #self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.pulls[pulled_arm]-1) + buyers/offers)/self.pulls[pulled_arm]
+        #self.empirical_means[pulled_arm] = np.mean(self.rewards_per_arm[pulled_arm])
+        self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.total_offers[pulled_arm]-offers) + buyers)/self.total_offers[pulled_arm]
 
 
         for a in range(self.n_arms):
             #n_samples = len(self.rewards_per_arm[a])
-            n_samples = self.pulls[a]
+            n_samples = self.total_offers[a]
             self.confidence[a] = (2*np.log(self.t)/n_samples)**0.5 if n_samples>0 else np.inf
         self.update_observations(pulled_arm,reward)
 

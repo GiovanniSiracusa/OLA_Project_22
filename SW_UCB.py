@@ -37,7 +37,10 @@ class SW_UCB(UCB):
         
         for arm in range(self.n_arms):
             # Mean of rewards
-            self.empirical_means[arm] = np.mean(self.rewards_per_arm[arm][-self.window_size:])
+            if len(self.rewards_per_arm[arm]):
+                self.empirical_means[arm] = 0
+            else:
+                self.empirical_means[arm] = np.mean(self.rewards_per_arm[arm][-self.window_size:])
 
             # Mean of conversion rates
             #self.empirical_means[arm] = np.sum(self.pulled_arms[-self.window_size:, 1])

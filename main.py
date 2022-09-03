@@ -25,6 +25,7 @@ def main():
             opt, best_price_conf = sim.bruteforce()
             rewardsTS, rewardsUCB = step_3()
             plot_regret(opt, rewardsTS, rewardsUCB)
+            print(np.random.get_state()[1][0])
             break
 
         elif step == 4:
