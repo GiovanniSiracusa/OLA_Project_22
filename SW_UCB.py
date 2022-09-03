@@ -28,7 +28,7 @@ class SW_UCB(UCB):
 
     def pull_arm(self, margin):
         upper_conf = self.empirical_means + self.confidence
-        return np.argmax(upper_conf*margin*self.alpha*self.items)
+        return np.argmax(upper_conf)
 
     def update(self, pulled_arm, reward, buyers, offers, alpha=None, items=None, graph=None):
         self.t +=1
@@ -36,9 +36,13 @@ class SW_UCB(UCB):
         self.pulled_arms = np.append(self.pulled_arms, np.array([[pulled_arm, buyers.astype(int), offers.astype(int)]]), axis=0)
         
         for arm in range(self.n_arms):
-            #self.empirical_means[arm] = np.mean(self.rewards_per_arm[arm][-self.window_size:])
-            self.empirical_means[arm] = np.sum(self.pulled_arms[-self.window_size:, 1])
-            self.empirical_means[arm] /= np.sum(self.pulled_arms[-self.window_size:, 2])
+            # Mean of rewards
+            self.empirical_means[arm] = np.mean(self.rewards_per_arm[arm][-self.window_size:])
+
+            # Mean of conversion rates
+            #self.empirical_means[arm] = np.sum(self.pulled_arms[-self.window_size:, 1])
+            #self.empirical_means[arm] /= np.sum(self.pulled_arms[-self.window_size:, 2])
+            
             n_samples = np.sum(self.pulled_arms[-self.window_size: , 0] == arm)
             self.confidence[arm] = (2*np.log(self.t)/n_samples)**0.5 if n_samples>0 else np.inf
         

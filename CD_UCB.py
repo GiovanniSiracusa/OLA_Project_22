@@ -33,5 +33,11 @@ class CD_UCB(UCB):
 
     def update_observations(self, pulled_arm, reward, buyers, offers):
         self.rewards_per_arm[pulled_arm].append(reward)
-        self.valid_rewards_per_arms[pulled_arm].append(buyers/offers)
+        
+        # Use reward as reward
+        self.valid_rewards_per_arms[pulled_arm].append(reward)
+
+        # Use conversion rate as reward
+        # self.valid_rewards_per_arms[pulled_arm].append(buyers/offers)
+
         self.collected_rewards = np.append(self.collected_rewards, reward)
