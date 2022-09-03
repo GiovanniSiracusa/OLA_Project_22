@@ -66,7 +66,16 @@ class UCB(Learner):
             self.arm_counter[pulled_arm] += 1
             self.graph[pulled_arm] = (self.graph[pulled_arm]*(self.arm_counter[pulled_arm] - 1) + graph)/self.arm_counter[pulled_arm]
 
-    
+    def get_mean_reward_per_arm(self):
+        mean = []
+        for i in range(self.n_arms):
+            s = 0
+            for j in range(len(self.rewards_per_arm[i])):
+                s += self.rewards_per_arm[i][j]
+            s /= len(self.rewards_per_arm[i])
+            mean.append(s)
+        return mean
+
     def plot_distribution(self):
         from scipy.stats import beta
         import matplotlib.pyplot as plt

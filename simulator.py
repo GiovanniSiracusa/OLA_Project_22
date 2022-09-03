@@ -92,16 +92,16 @@ class Simulator:
                 max = reward
                 best_conf = conf
 
-        opt = 0
+        opt_per_product = np.zeros(self.n_products)
         for i in range(100):
             print("Bruteforce:", i)
             reward = self.simulate(best_conf, users=100)[0]
-            opt += reward
-        opt /= 100
+            opt_per_product += reward
+        opt_per_product /= 100
 
-        opt = np.sum(opt)
+        opt = np.sum(opt_per_product)
         print(f"Bruteforce\n Max reward: {opt}\n Best configuration: {best_conf}")
-        return opt, best_conf
+        return opt, opt_per_product, best_conf
 
     def estimate_probabilities(self, dataset, previous):
         credits = np.zeros((self.n_products, self.n_products))

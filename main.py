@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 def main():
     sim = Simulator(0)
-
+    time_horizon = 300
     while True:
         step = int(input("Select the step [2-3-4-5-6-7]: "))
 
@@ -22,8 +22,9 @@ def main():
             break
 
         elif step == 3:
-            opt, best_price_conf = sim.bruteforce()
-            rewardsTS, rewardsUCB = step_3()
+            opt,opt_per_product, best_price_conf = sim.bruteforce()
+            rewardsTS, rewardsUCB, mean_rewards = step_3(time_horizon)
+            compute_UCBbound(opt_per_product,mean_rewards, time_horizon)
             plot_regret(opt, rewardsTS, rewardsUCB)
             print(np.random.get_state()[1][0])
             break
@@ -91,6 +92,17 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp,step=0):
 
     plt.legend()
     plt.show()
+
+
+def compute_UCBbound(opt_per_product, mean_rewards, time_horizon):
+    s = 0
+    for i in range(5):
+        for j in range(4):
+            delta = opt_per_product[i] - mean_rewards[i][j]
+            s += (4*np.log(time_horizon)/delta + 8*delta)
+    print(s)
+
+
 
 
 if __name__ == "__main__":

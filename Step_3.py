@@ -6,9 +6,9 @@ from simulator import Simulator
 from Greedy_Learner import Greedy_Learner
 
 
-def step_3():
+def step_3(time_horizon):
     n_experiments = 1
-    time_horizon = 300
+    #time_horizon = 300
     sim = Simulator(0)
     rewardsTS_exp = []
     rewardsUCB_exp = []
@@ -46,11 +46,11 @@ def step_3():
             print("UCB: ", price_conf)
 
             # print("Reward: ", reward)
-
         rewardsTS_exp.append(rewardsTS)
         rewardsUCB_exp.append(rewardsUCB)
+        mean_rewards = [ucb[i].get_mean_reward_per_arm() for i in range(sim.n_products)]
         # ts[1].plot_distribution()
         # ucb[1].plot_distribution()
         # print("Rewards", rewardsTS)
         # print("Rewards", rewardsUCB)
-    return rewardsTS_exp, rewardsUCB_exp
+    return rewardsTS_exp, rewardsUCB_exp, mean_rewards
