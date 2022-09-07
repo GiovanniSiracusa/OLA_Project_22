@@ -28,7 +28,7 @@ def main():
             opt,opt_per_product, best_price_conf = sim.bruteforce()
             rewardsTS, rewardsUCB, mean_rewards = step_3(time_horizon)
             bound = compute_UCBbound(opt_per_product,mean_rewards, time_horizon)
-            plot_regret(opt, rewardsTS, rewardsUCB, time_horizon, bound)
+            plot_regret(opt, rewardsTS, rewardsUCB, time_horizon, bound = 0)
             break
 
         elif step == 4:
@@ -89,12 +89,12 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound = 0, ste
         plt.plot(time_horizon*[bound], 'b')
     #plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
 
-    #x = np.arange(len(rewardsTS_exp[0]), dtype=float)
-    #y_ts=(np.cumsum(np.mean(opt-rewardsTS_exp, axis=0)))
+    x = np.arange(time_horizon)
+    y_ts=(np.cumsum(np.mean(opt-rewardsTS_exp, axis=0)))
     #y_ucb=(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)))
-    #dev_ts=np.std(opt - rewardsTS_exp, axis=0)
+    dev_ts=np.std(np.cumsum(opt - rewardsTS_exp, axis=1), axis=0)
     #dev_ucb=np.std(opt - rewardsUCB_exp, axis=0)
-
+    plt.fill_between(x, y_ts-dev_ts, y_ts+dev_ts, alpha=0.4)
     plt.legend()
     plt.show()
 

@@ -7,7 +7,7 @@ from Greedy_Learner import Greedy_Learner
 
 
 def step_3(time_horizon):
-    n_experiments = 1
+    n_experiments = 3
     #time_horizon = 300
     sim = Simulator(0)
     rewardsTS_exp = []
