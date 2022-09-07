@@ -12,7 +12,7 @@ from pricing_env import UserClass
 import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
 
-np.random.seed(seed=3259414887)
+#np.random.seed(seed=3259414887)
 #random.seed(1111)
 
 T = 100
@@ -133,7 +133,7 @@ class Simulator:
 
         return initial_active_node
 
-    def simulate(self, price_conf, users=None):
+    def simulate(self, price_conf, users=None, cl_number = -1):
         reward = np.zeros(self.n_products)
         buyers = np.zeros(self.n_products)
         offers = np.zeros(self.n_products)
@@ -143,8 +143,10 @@ class Simulator:
         total_previous = []
 
         total_users = 0
-        for cl in self.user_classes:
-
+        for cl_id, cl in enumerate(self.user_classes):
+            if cl_number >= 0:
+                if cl_id != cl_number:
+                    continue
             if users == None:
                 daily_users = random.randint(cl.min_daily_users, cl.max_daily_users)
             else:
@@ -243,6 +245,7 @@ class Simulator:
                 total_previous.append(previous)
 
         # return history, previous
+
         return reward / total_users, buyers, offers, alphas / total_users, items / buyers, total_history, total_previous
 
 

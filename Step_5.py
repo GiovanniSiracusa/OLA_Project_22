@@ -5,9 +5,9 @@ from UCB import UCB
 from simulator import Simulator
 
 
-def step_5():
+def step_5(time_horizon):
     n_experiments = 1
-    time_horizon = 300
+    #time_horizon = 300
     sim = Simulator(0)
     rewardsTS_exp = []
     rewardsUCB_exp = []

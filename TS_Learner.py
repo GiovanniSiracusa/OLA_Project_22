@@ -1,3 +1,4 @@
+import math
 from Learner import *
 import numpy as np
 
@@ -52,8 +53,9 @@ class TS_Learner(Learner):
         if alpha != None:
             self.alpha = (self.alpha * (self.t-1) + alpha)/self.t
         
-        if items != None:
+        if items != None and not math.isnan(items):
             self.items = (self.items * (self.t-1) + items)/self.t
+           
         
         if np.all(graph != None):
             self.arm_counter[pulled_arm] += 1
