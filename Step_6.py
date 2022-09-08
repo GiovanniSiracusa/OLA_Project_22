@@ -11,7 +11,7 @@ from simulator import Simulator
 def step_6():
     n_experiments = 1
     time_horizon = 450
-    sim = [Simulator(i) for i in range(1,4)]
+    sim = [Simulator(i) for i in range(3)]
     cf=[cf1, cf2, cf3]
     rewardsSW_exp = []
     rewardsCD_exp = []
@@ -55,7 +55,7 @@ def step_6():
             price_conf = np.array([cd[i].pull_arm(cf[phase].margin[i]) for i in range(sim[phase].n_products)])
             reward, buyers, offers, alphas, items, history, previous = sim[phase].simulate(price_conf)
             for p in range(sim[phase].n_products):
-                cd[p].update(price_conf[p], reward[p], buyers[p], offers[p])
+                cd[p].update(price_conf[p], reward[p], buyers[p], offers[p], cf[phase].margin[p])
             rewardsCD = np.append(rewardsCD, np.sum(reward))
             # print(t)
             print("CD: ", price_conf)

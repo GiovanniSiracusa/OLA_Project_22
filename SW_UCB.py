@@ -7,7 +7,7 @@ class SW_UCB(UCB):
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.array([np.inf]*n_arms)
         self.window_size = window_size
-        self.pulled_arms = np.empty((0, 3))
+        self.pulled_arms = [[] for i in range(n_arms)]
 
         if np.all(alpha != None): 
             self.alpha = alpha
@@ -28,25 +28,26 @@ class SW_UCB(UCB):
 
     def pull_arm(self, margin):
         upper_conf = self.empirical_means + self.confidence
-        return np.argmax(upper_conf)
+        return np.argmax(upper_conf*margin)
 
     def update(self, pulled_arm, reward, buyers, offers, alpha=None, items=None, graph=None):
         self.t +=1
         self.update_observations(pulled_arm,reward)
-        self.pulled_arms = np.append(self.pulled_arms, np.array([[pulled_arm, buyers.astype(int), offers.astype(int)]]), axis=0)
+        self.pulled_arms[pulled_arm].append([buyers.astype(int), offers.astype(int)])
         
         for arm in range(self.n_arms):
             # Mean of rewards
-            if len(self.rewards_per_arm[arm]):
-                self.empirical_means[arm] = 0
-            else:
-                self.empirical_means[arm] = np.mean(self.rewards_per_arm[arm][-self.window_size:])
+            # if len(self.rewards_per_arm[arm]):
+            #     self.empirical_means[arm] = 0
+            # else:
+            #     self.empirical_means[arm] = np.mean(self.rewards_per_arm[arm][-self.window_size:])
 
             # Mean of conversion rates
-            #self.empirical_means[arm] = np.sum(self.pulled_arms[-self.window_size:, 1])
-            #self.empirical_means[arm] /= np.sum(self.pulled_arms[-self.window_size:, 2])
+            self.empirical_means[arm] = sum(el[0] for el in self.pulled_arms[arm][-self.window_size:])
+            self.empirical_means[arm] /= sum(el[1] for el in self.pulled_arms[arm][-self.window_size:])
             
-            n_samples = np.sum(self.pulled_arms[-self.window_size: , 0] == arm)
+            #n_samples = np.sum(self.pulled_arms[-self.window_size: , 0] == arm)
+            n_samples = sum(el[1] for el in self.pulled_arms[arm][-self.window_size:])
             self.confidence[arm] = (2*np.log(self.t)/n_samples)**0.5 if n_samples>0 else np.inf
         
 

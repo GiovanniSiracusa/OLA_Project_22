@@ -29,9 +29,8 @@ class Simulator:
         if config_file == 1:
             import config1 as cf
         if config_file == 2:
-            import config1 as cf
-        if config_file == 3:
             import config2 as cf
+
 
         self.cr_mean = cf.cr_mean
         self.alphas_mean = cf.alphas_mean

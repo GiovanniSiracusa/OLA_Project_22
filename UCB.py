@@ -6,7 +6,6 @@ class UCB(Learner):
         super().__init__(n_arms)
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.array([np.inf]*n_arms)
-        self.pulls = np.zeros(n_arms)
         self.total_offers = np.zeros(n_arms)
 
         if np.all(alpha != None): 
@@ -38,7 +37,6 @@ class UCB(Learner):
 
     def update(self, pulled_arm, reward, buyers, offers, alpha=None, items=None, graph=None):
         self.t += 1
-        self.pulls[pulled_arm] += 1
         self.total_offers[pulled_arm] += offers
 
         # for i in range(0, buyers.astype(int)):

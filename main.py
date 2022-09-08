@@ -50,6 +50,7 @@ def main():
             opt, opt_per_product, best_price_conf = sim.bruteforce()
             opt1, opt_per_product1, best_price_conf = sim1.bruteforce()
             opt2, opt_per_product2, best_price_conf = sim2.bruteforce()
+            
             for i in range(0,150):
                 opt_final=np.append(opt_final,opt)
             for i in range(150,300):
@@ -91,10 +92,17 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound = 0, ste
 
     x = np.arange(time_horizon)
     y_ts=(np.cumsum(np.mean(opt-rewardsTS_exp, axis=0)))
-    #y_ucb=(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)))
+    y_ucb=(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)))
+
     dev_ts=np.std(np.cumsum(opt - rewardsTS_exp, axis=1), axis=0)
-    #dev_ucb=np.std(opt - rewardsUCB_exp, axis=0)
-    plt.fill_between(x, y_ts-dev_ts, y_ts+dev_ts, alpha=0.4)
+    dev_ucb=np.std(np.cumsum(opt - rewardsUCB_exp, axis=1), axis=0)
+    
+    n_ts = len(rewardsTS_exp)
+    n_ucb = len(rewardsUCB_exp)
+
+    plt.fill_between(x, y_ts-dev_ts*1.96/np.sqrt(n_ts), y_ts+dev_ts*1.96/np.sqrt(n_ts), color='r', alpha=0.4)
+    plt.fill_between(x, y_ucb-dev_ucb*1.96/np.sqrt(n_ucb), y_ucb+dev_ucb*1.96/np.sqrt(n_ucb), color='g', alpha=0.4)
+
     plt.legend()
     plt.show()
 
