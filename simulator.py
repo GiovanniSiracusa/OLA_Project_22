@@ -35,6 +35,7 @@ class Simulator:
         self.cr_mean = cf.cr_mean
         self.alphas_mean = cf.alphas_mean
         self.margin = cf.margin
+        self.graph_probs_mean = cf.graph_probs_mean
 
         self.u1 = UserClass(
             cf.conversion_rates4,
@@ -79,14 +80,17 @@ class Simulator:
 
         return np.array([int(a) for a in str(base_num).zfill(self.n_products)])
 
-    def bruteforce(self):
+    def bruteforce(self, step=0):
         max = 0
         best_conf = None
         for i in range(self.n_prices ** self.n_products):
             conf = self.dec_to_base(i)
             reward = 0
             for p, c in enumerate(conf):
-                reward += self.alphas_mean[p + 1] * self.cr_mean[p][c] * self.margin[p][c]
+                if step == 5:
+                    reward += self.alphas_mean[p + 1] * self.cr_mean[p][c] * self.margin[p][c] * np.sum(self.graph_probs_mean[p])
+                else :
+                    reward += self.alphas_mean[p + 1] * self.cr_mean[p][c] * self.margin[p][c]
             if reward > max:
                 max = reward
                 best_conf = conf

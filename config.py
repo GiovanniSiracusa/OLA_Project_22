@@ -125,6 +125,8 @@ graph_probs4 = np.array([[0, 0.0, 0.0, 0.0, 0.0],
                         [0.8, 0.7, 0.6, 0.0, 0.6],      #riga più alta perché prodotto che soddisfa di più la categoria
                         [0.0, 0.0, 0.0, 0.0, 0.0]]).T
 
+graph_probs_mean = (graph_probs2 + graph_probs3 + graph_probs4)/3
+
 l = 0.8
 
 lambda_mat2 = np.array([[0.0, 0.0, 0.0, 1, l],

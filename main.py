@@ -38,7 +38,7 @@ def main():
             break
 
         elif step == 5:
-            opt, opt_per_product, best_price_conf = sim.bruteforce()
+            opt, opt_per_product, best_price_conf = sim.bruteforce(step = 5)
             rewardsTS, rewardsUCB = step_5(time_horizon)
             plot_regret(opt, rewardsTS, rewardsUCB, time_horizon)
             break
