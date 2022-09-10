@@ -23,40 +23,38 @@ import numpy as np
 #                             [0.4, 0.3, 0.2, 0.05],   #Pianta grassa
 #                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
+#riduzione dei conversion rate del 30% dovuta dalla crisi economica e quindi una tendenza a non acqiostare più alta su tutte le classi
 #FEMMINE <35 ANNI
 conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
                              [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
                              [0.4, 0.3, 0.2, 0.05],   #Cantinetta per il vino
                              [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
                              [0.9, 0.75, 0.6, 0.3]])  #Pouf
-conversion_rates2 = 0.7*conversion_rates2
 #MASCHI >35 ANNI
 conversion_rates3 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
                              [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
                              [0.9, 0.75, 0.6, 0.3],   #Cantinetta per il vino
                              [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
                              [0.4, 0.3, 0.2, 0.05]])  #Pouf
-conversion_rates3 = 0.7*conversion_rates3
 #FEMMINE >35 ANNI
 conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05],  #Alexa
                              [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
                              [0.6, 0.45, 0.3, 0.1],   #Cantinetta per il vino
                              [0.9, 0.75, 0.6, 0.3],    #Pianta grassa
                              [0.6, 0.45, 0.3, 0.1]])  #Pouf
-conversion_rates4 = 0.7*conversion_rates4
 
 cr_mean = (conversion_rates2+conversion_rates3+conversion_rates4)/3
 
 # DEFINIRE I PREZZI DI OGNI PRODOTTO
-prices = np.array([[22, 28, 37, 55],         #alexa
-                  [179, 200, 217, 228],      #quadro
-                  [244, 254, 265, 350],      #cantinetta
-                  [17, 21, 24, 28],          #pianta
-                  [69, 74, 81, 85]])         #pouf
+prices = np.array([[20, 25, 34, 50],         #alexa
+                  [169, 189, 205, 215],      #quadro
+                  [230, 240, 250, 330],      #cantinetta
+                  [16, 20, 23, 26],          #pianta
+                  [65, 70, 76, 80]])         #pouf
 
 #alexa, quadro, cantinetta, pianta, pouf
-costs = np.array([[16], [88], [152], [4], [25]])
-
+costs = np.array([[16], [169], [230], [4], [65]])    #alzato i costi di quadro, cantinetta e di pouf fino a margine =0 al primo prezzo
+#aumento costi di consegna per prodotti voluminosi quindi generale aumento del costo
 margin = prices - costs
 
 # DEFINIRE ALPHAS PER OGNI CLASSE DI UTENTI
@@ -127,7 +125,6 @@ graph_probs4 = np.array([[0, 0.0, 0.0, 0.0, 0.0],
                         [0.0, 0.0, 0.0, 0.0, 0.0]]).T
 
 graph_probs_mean = (graph_probs2 + graph_probs3 + graph_probs4)/3
-
 
 l = 0.8
 

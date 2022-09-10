@@ -1,7 +1,7 @@
 import numpy as np
 import config as cf1
 import config1 as cf2
-import config2 as cf3
+import config3 as cf3
 
 from SW_UCB import SW_UCB
 from CD_UCB import CD_UCB

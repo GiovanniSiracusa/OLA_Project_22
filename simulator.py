@@ -29,7 +29,7 @@ class Simulator:
         if config_file == 1:
             import config1 as cf
         if config_file == 2:
-            import config2 as cf
+            import config3 as cf
 
 
         self.cr_mean = cf.cr_mean
