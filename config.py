@@ -111,19 +111,31 @@ graph_probs2 = np.array([[0.0, 0.0, 0.0, 0.3, 0.2],
                         [0.0, 0.3, 0.0, 0.0, 0.0],
                         [0.6, 0.7, 0.8, 0.6, 0.0]]).T    #riga più alta perché prodotto che soddisfa di più la categoria
 
-#MASCHI >35
-graph_probs3 = np.array([[0, 0.0, 0.2, 0.3, 0.4],
-                        [0.0, 0, 0.2, 0.0, 0.0],
-                        [0.6, 0.7, 0, 0.6, 0.8],       #riga più alta perché prodotto che soddisfa di più la categoria
-                        [0.0, 0.3, 0.0, 0, 0.0],
-                        [0.2, 0.0, 0.0, 0.0, 0]]).T
+graph_probs3 = np.array([[0.0, 0.0, 0.0, 0.3, 0.2],
+                        [0.3, 0.0, 0.4, 0.0, 0.2],
+                        [0.0, 0.0, 0.0, 0.0, 0.0],
+                        [0.0, 0.3, 0.0, 0.0, 0.0],
+                        [0.6, 0.7, 0.8, 0.6, 0.0]]).T
 
-#FEMMINIE >35
-graph_probs4 = np.array([[0, 0.0, 0.0, 0.0, 0.0],
-                        [0.0, 0, 0.3, 0.2, 0.0],
-                        [0.4, 0.3, 0, 0.2, 0.3],
-                        [0.8, 0.7, 0.6, 0.0, 0.6],      #riga più alta perché prodotto che soddisfa di più la categoria
-                        [0.0, 0.0, 0.0, 0.0, 0.0]]).T
+graph_probs4 = np.array([[0.0, 0.0, 0.0, 0.3, 0.2],
+                        [0.3, 0.0, 0.4, 0.0, 0.2],
+                        [0.0, 0.0, 0.0, 0.0, 0.0],
+                        [0.0, 0.3, 0.0, 0.0, 0.0],
+                        [0.6, 0.7, 0.8, 0.6, 0.0]]).T
+
+#MASCHI >35
+# graph_probs3 = np.array([[0, 0.0, 0.2, 0.3, 0.4],
+#                         [0.0, 0, 0.2, 0.0, 0.0],
+#                         [0.6, 0.7, 0, 0.6, 0.8],       #riga più alta perché prodotto che soddisfa di più la categoria
+#                         [0.0, 0.3, 0.0, 0, 0.0],
+#                         [0.2, 0.0, 0.0, 0.0, 0]]).T
+
+# #FEMMINIE >35
+# graph_probs4 = np.array([[0, 0.0, 0.0, 0.0, 0.0],
+#                         [0.0, 0, 0.3, 0.2, 0.0],
+#                         [0.4, 0.3, 0, 0.2, 0.3],
+#                         [0.8, 0.7, 0.6, 0.0, 0.6],      #riga più alta perché prodotto che soddisfa di più la categoria
+#                         [0.0, 0.0, 0.0, 0.0, 0.0]]).T
 
 graph_probs_mean = (graph_probs2 + graph_probs3 + graph_probs4)/3
 

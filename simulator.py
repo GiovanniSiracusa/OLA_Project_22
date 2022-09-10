@@ -65,6 +65,7 @@ class Simulator:
         )
 
         self.user_classes = [self.u1, self.u2, self.u3]
+        self.lam = cf.lambda_mat2
 
     def dec_to_base(self, num, base=4):  # Maximum base - 36
         base_num = ""
@@ -91,6 +92,7 @@ class Simulator:
                     reward += self.cr_mean[p][c] * self.margin[p][c] * np.sum(self.graph_probs_mean[p])
                 else :
                     reward += self.alphas_mean[p + 1] * self.cr_mean[p][c] * self.margin[p][c]
+            
             if reward > max:
                 max = reward
                 best_conf = conf
@@ -125,7 +127,7 @@ class Simulator:
             for j in range(self.n_products):
                 credits[i, j] = credits[i, j] / active[i]
         # print(credits.T)
-        return credits
+        return credits * self.lam
 
     def initial_node(self, alphas):
         nodes = np.array(range(self.n_products + 1))
@@ -166,7 +168,7 @@ class Simulator:
 
                 alphas[np.argwhere(initial_active_node).reshape(-1)] += 1
 
-                prob_matrix = cl.graph_probs.copy()
+                prob_matrix = cl.graph_probs.copy() * self.lam
                 np.fill_diagonal(prob_matrix, 0)
 
                 history = np.empty((0, self.n_products))
@@ -201,22 +203,22 @@ class Simulator:
                         p = (prob_matrix.T * active_node).T
                         # print(p)
                         rnd = np.argwhere(p[idx_active] > 0)[:, 1]
-                        # print(rnd)
-                        if len(rnd) == 0:
-                            rnd = np.array([0, 0])
-                        if len(rnd) == 1:
-                            rnd = np.append(rnd, 0)
-                            # np.random.choice(np.where(np.arange(self.n_products) != idx_active)[
-                            #              0], 2, replace=False)
-                        # print("Possible choice: ", rnd)
-                        for i in range(self.n_products):
-                            # Multiply by lambda the secondary product in the second slot
-                            if i == rnd[0]:
-                                pass
-                            elif i == rnd[1]:
-                                p[idx_active, i] = p[idx_active, i] * self.l
-                            else:
-                                p[idx_active, i] = 0
+                        # # print(rnd)
+                        # if len(rnd) == 0:
+                        #     rnd = np.array([0, 0])
+                        # if len(rnd) == 1:
+                        #     rnd = np.append(rnd, 0)
+                        #     # np.random.choice(np.where(np.arange(self.n_products) != idx_active)[
+                        #     #              0], 2, replace=False)
+                        # # print("Possible choice: ", rnd)
+                        # for i in range(self.n_products):
+                        #     # Multiply by lambda the secondary product in the second slot
+                        #     if i == rnd[0]:
+                        #         pass
+                        #     elif i == rnd[1]:
+                        #         p[idx_active, i] = p[idx_active, i] * self.l
+                        #     else:
+                        #         p[idx_active, i] = 0
 
                         # print(p)
                         activated_edges = p > np.random.rand(p.shape[0], p.shape[1])
