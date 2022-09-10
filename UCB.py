@@ -1,3 +1,4 @@
+import math
 from Learner import Learner
 import numpy as np
 
@@ -57,7 +58,7 @@ class UCB(Learner):
         if alpha != None:
             self.alpha = (self.alpha * (self.t-1) + alpha)/self.t
         
-        if items != None:
+        if items != None and items != 0 and not math.isnan(items):
             self.items = (self.items * (self.t-1) + items)/self.t
         
         if np.all(graph != None):

@@ -248,8 +248,11 @@ class Simulator:
                 total_previous.append(previous)
 
         # return history, previous
-
-        return reward / total_users, buyers, offers, alphas / total_users, items / buyers, total_history, total_previous
+        items_mean = 0
+        if buyers == 0:
+            items_mean = items / buyers
+        
+        return reward / total_users, buyers, offers, alphas / total_users, items_mean, total_history, total_previous
 
 
 if __name__ == '__main__':
