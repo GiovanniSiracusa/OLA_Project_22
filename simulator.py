@@ -88,7 +88,7 @@ class Simulator:
             reward = 0
             for p, c in enumerate(conf):
                 if step == 5:
-                    reward += self.alphas_mean[p + 1] * self.cr_mean[p][c] * self.margin[p][c] * np.sum(self.graph_probs_mean[p])
+                    reward += self.cr_mean[p][c] * self.margin[p][c] * np.sum(self.graph_probs_mean[p])
                 else :
                     reward += self.alphas_mean[p + 1] * self.cr_mean[p][c] * self.margin[p][c]
             if reward > max:
@@ -248,9 +248,10 @@ class Simulator:
                 total_previous.append(previous)
 
         # return history, previous
-        items_mean = 0
-        if buyers == 0:
-            items_mean = items / buyers
+        items_mean = np.zeros(self.n_products)
+        for i in range(self.n_products):
+            if buyers[i] != 0:
+                items_mean[i] = items[i] / buyers[i]
         
         return reward / total_users, buyers, offers, alphas / total_users, items_mean, total_history, total_previous
 

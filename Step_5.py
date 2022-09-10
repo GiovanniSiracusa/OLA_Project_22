@@ -28,7 +28,6 @@ def step_5(time_horizon):
             reward, buyers, offers, alphas, items, history, previous = sim.simulate(price_conf)
             graph_prob = sim.estimate_probabilities(history, previous)
             # print(graph_prob)
-
             for p in range(sim.n_products):
                 ts[p].update(price_conf[p], reward[p], buyers[p], offers[p], graph=graph_prob[p])
             rewardsTS = np.append(rewardsTS, np.sum(reward))
@@ -39,12 +38,13 @@ def step_5(time_horizon):
 
         for t in range(time_horizon):
             # UCB
-            price_conf = np.array([ucb[i].pull_arm(cf.margin[i]) for i in range(sim.n_products)])
+            price_conf = np.array([ucb[i].pull_arm_step5(cf.margin[i]) for i in range(sim.n_products)])
             reward, buyers, offers, alphas, items, history, previous = sim.simulate(price_conf)
+            graph_prob = sim.estimate_probabilities(history, previous)
             for p in range(sim.n_products):
                 ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], graph=graph_prob[p])
             rewardsUCB = np.append(rewardsUCB, np.sum(reward))
-            # print(t)
+            print(t)
             print("UCB: ", price_conf)
 
             # print("Reward: ", reward)

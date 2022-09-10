@@ -16,7 +16,7 @@ def main():
         step = int(input("Select the step [2-3-4-5-6-7]: "))
 
         if step == 2:
-            opt, best_price_conf = sim.bruteforce()
+            opt, _ , best_price_conf = sim.bruteforce()
             opt_per_product, max_price_conf = step_2()
             print("\nRevenue provided by the greedy algorithm:", np.sum(opt_per_product),
                   "\nOptimal price configuration", max_price_conf)
