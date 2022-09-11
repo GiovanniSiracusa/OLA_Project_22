@@ -29,12 +29,14 @@ def main():
             rewardsTS, rewardsUCB, mean_rewards = step_3(time_horizon)
             bound = compute_UCBbound(opt_per_product,mean_rewards, time_horizon)
             plot_regret(opt, rewardsTS, rewardsUCB, time_horizon, bound = 0)
+            plot_reward(opt, rewardsTS, rewardsUCB, time_horizon)
             break
 
         elif step == 4:
             opt, opt_per_product, best_price_conf = sim.bruteforce()
             rewardsTS, rewardsUCB = step_4(time_horizon)
-            plot_regret(opt, rewardsTS, rewardsUCB, time_horizon)
+            plot_regret(opt, rewardsTS, rewardsUCB, time_horizon, bound = 0)
+            plot_reward(opt, rewardsTS, rewardsUCB, time_horizon)
             break
 
         elif step == 5:

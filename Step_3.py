@@ -7,7 +7,7 @@ from Greedy_Learner import Greedy_Learner
 
 
 def step_3(time_horizon):
-    n_experiments = 3
+    n_experiments = 5
     #time_horizon = 300
     sim = Simulator(0)
     rewardsTS_exp = []
@@ -30,10 +30,10 @@ def step_3(time_horizon):
             for p in range(sim.n_products):
                 ts[p].update(price_conf[p], reward[p], buyers[p], offers[p])
             rewardsTS = np.append(rewardsTS, np.sum(reward))
-            print(t)
-            print("TS: ", price_conf)
+            #print(t)
             # print("Reward: ", reward)
             # print(price_conf, reward, cr)
+        print("TS final price configuration: ", price_conf)
 
         for t in range(time_horizon):
             # UCB
@@ -42,8 +42,8 @@ def step_3(time_horizon):
             for p in range(sim.n_products):
                 ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p])
             rewardsUCB = np.append(rewardsUCB, np.sum(reward))
-            print(t)
-            print("UCB: ", price_conf)
+            #print(t)
+        print("UCB final price configuration: ", price_conf)
 
             # print("Reward: ", reward)
         rewardsTS_exp.append(rewardsTS)

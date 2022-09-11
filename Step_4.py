@@ -6,7 +6,7 @@ from simulator import Simulator
 
 
 def step_4(time_horizon):
-    n_experiments = 1
+    n_experiments = 5
     #time_horizon = 100
     sim = Simulator(0)
 
@@ -30,10 +30,8 @@ def step_4(time_horizon):
             for p in range(sim.n_products):
                 ts[p].update(price_conf[p], reward[p], buyers[p], offers[p], alphas[p], items[p])
             rewardsTS = np.append(rewardsTS, np.sum(reward))
-            print(t)
-            print("TS: ", price_conf)
-            # print("Reward: ", reward)
-            # print(price_conf, reward, cr)
+            #print(t)
+        print("TS final price configuration: ", price_conf)
 
         for t in range(time_horizon):
             # UCB
@@ -43,14 +41,13 @@ def step_4(time_horizon):
                 ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], alphas[p], items[p])
             rewardsUCB = np.append(rewardsUCB, np.sum(reward))
             # print(t)
-            print("UCB: " ,price_conf)
+        print("UCB final price configuration: " ,price_conf)
 
-            # print("Reward: ", reward)
 
-        for i in range(5):
-            print(i)
-            print("Alpha:", ts[i].alpha)
-            print("Items:", ts[i].items)
+        #for i in range(5):
+        #    print(i)
+        #    print("Alpha:", ts[i].alpha)
+        #    print("Items:", ts[i].items)
 
         rewardsTS_exp.append(rewardsTS)
         rewardsUCB_exp.append(rewardsUCB)

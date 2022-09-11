@@ -87,9 +87,13 @@ class Simulator:
         for i in range(self.n_prices ** self.n_products):
             conf = self.dec_to_base(i)
             reward = 0
+            if step==5:
+                _, buyers, offers, alphas, items, history, previous = self.simulate(conf)
+                graph_prob = self.estimate_probabilities(history, previous)
+            #print(i)
             for p, c in enumerate(conf):
                 if step == 5:
-                    reward += self.cr_mean[p][c] * self.margin[p][c] * np.sum(self.graph_probs_mean[p])
+                    reward += self.cr_mean[p][c] * self.margin[p][c] * np.sum(graph_prob[p])
                 else :
                     reward += self.alphas_mean[p + 1] * self.cr_mean[p][c] * self.margin[p][c]
             
