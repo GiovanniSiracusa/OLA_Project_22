@@ -6,7 +6,7 @@ from simulator import Simulator
 
 
 def step_5(time_horizon):
-    n_experiments = 1
+    n_experiments = 5
     #time_horizon = 300
     sim = Simulator(0)
     rewardsTS_exp = []
@@ -31,26 +31,26 @@ def step_5(time_horizon):
             for p in range(sim.n_products):
                 ts[p].update(price_conf[p], reward[p], buyers[p], offers[p], graph=graph_prob[p])
             rewardsTS = np.append(rewardsTS, np.sum(reward))
-            print(t)
-            print("TS: ", price_conf)
+            #print(t)
+
             # print("Reward: ", reward)
             # print(price_conf, reward, cr)
-
-        for t in range(time_horizon):
+        print("TS final price conf: ", price_conf)
+        #for t in range(time_horizon):
             # UCB
-            price_conf = np.array([ucb[i].pull_arm_step5(cf.margin[i]) for i in range(sim.n_products)])
-            reward, buyers, offers, alphas, items, history, previous = sim.simulate(price_conf)
-            graph_prob = sim.estimate_probabilities(history, previous)
-            for p in range(sim.n_products):
-                ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], graph=graph_prob[p])
-            rewardsUCB = np.append(rewardsUCB, np.sum(reward))
-            print(t)
-            print("UCB: ", price_conf)
+        #    price_conf = np.array([ucb[i].pull_arm_step5(cf.margin[i]) for i in range(sim.n_products)])
+        #    reward, buyers, offers, alphas, items, history, previous = sim.simulate(price_conf)
+        #    graph_prob = sim.estimate_probabilities(history, previous)
+        #    for p in range(sim.n_products):
+        #        ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], graph=graph_prob[p])
+        #    rewardsUCB = np.append(rewardsUCB, np.sum(reward))
+            #print(t)
+        #print("Final UCB price conf: ", price_conf)
 
             # print("Reward: ", reward)
 
         rewardsTS_exp.append(rewardsTS)
-        rewardsUCB_exp.append(rewardsUCB)
+        #rewardsUCB_exp.append(rewardsUCB)
         # print("Rewards", rewardsTS)
         # print("Rewards", rewardsUCB)
-    return rewardsTS_exp, rewardsUCB_exp
+    return rewardsTS_exp

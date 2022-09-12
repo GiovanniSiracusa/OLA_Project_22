@@ -40,9 +40,10 @@ def main():
             break
 
         elif step == 5:
-            opt, opt_per_product, best_price_conf = sim.bruteforce(step = 5)
-            rewardsTS, rewardsUCB = step_5(time_horizon)
-            plot_regret(opt, rewardsTS, rewardsUCB, time_horizon)
+            opt, opt_per_product, best_price_conf = sim.bruteforce()
+            rewardsTS = step_5(time_horizon)
+            plot_regret(opt, rewardsTS, None, time_horizon)
+            plot_reward(opt, rewardsTS, None, time_horizon)
             break
 
         elif step == 6:
@@ -87,23 +88,28 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound = 0, ste
     #plt.plot(np.mean(rewardsUCB_exp, axis=0),'g')
     #plt.plot(np.cumsum(T*[opt]),'b')
     plt.plot(np.cumsum(np.mean(opt-rewardsTS_exp, axis=0)),'r',label=labels[0])
-    plt.plot(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)),'g',label=labels[1])
+    if rewardsUCB_exp != None:
+        plt.plot(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)),'g',label=labels[1])
     if bound != 0:
         plt.plot(time_horizon*[bound], 'b')
     #plt.plot(np.cumsum(100*[opt]-rewards_per_experiment))
 
     x = np.arange(time_horizon)
     y_ts=(np.cumsum(np.mean(opt-rewardsTS_exp, axis=0)))
-    y_ucb=(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)))
+    if rewardsUCB_exp != None:
+        y_ucb=(np.cumsum(np.mean(opt-rewardsUCB_exp, axis=0)))
 
     dev_ts=np.std(np.cumsum(opt - rewardsTS_exp, axis=1), axis=0)
-    dev_ucb=np.std(np.cumsum(opt - rewardsUCB_exp, axis=1), axis=0)
-    
+    if rewardsUCB_exp != None:
+        dev_ucb=np.std(np.cumsum(opt - rewardsUCB_exp, axis=1), axis=0)
+
     n_ts = len(rewardsTS_exp)
-    n_ucb = len(rewardsUCB_exp)
+    if rewardsUCB_exp != None:
+        n_ucb = len(rewardsUCB_exp)
 
     plt.fill_between(x, y_ts-dev_ts*1.96/np.sqrt(n_ts), y_ts+dev_ts*1.96/np.sqrt(n_ts), color='r', alpha=0.4)
-    plt.fill_between(x, y_ucb-dev_ucb*1.96/np.sqrt(n_ucb), y_ucb+dev_ucb*1.96/np.sqrt(n_ucb), color='g', alpha=0.4)
+    if rewardsUCB_exp != None:
+        plt.fill_between(x, y_ucb-dev_ucb*1.96/np.sqrt(n_ucb), y_ucb+dev_ucb*1.96/np.sqrt(n_ucb), color='g', alpha=0.4)
 
     plt.legend()
     plt.show()
@@ -117,8 +123,9 @@ def plot_reward(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon):
     plt.plot(average_y[:-10], 'y', label='TS_avg')
     #plt.plot(np.mean(rewardsTS_exp, axis=0),'r', label='TS')
 
-    average_y = moving_average(np.mean(rewardsUCB_exp, axis=0), window)
-    plt.plot(average_y[:-10], 'c', label='UCB_avg')
+    if rewardsUCB_exp != None:
+        average_y = moving_average(np.mean(rewardsUCB_exp, axis=0), window)
+        plt.plot(average_y[:-10], 'c', label='UCB_avg')
     #plt.plot(np.mean(rewardsUCB_exp, axis=0),'g', label='UCB')
 
     plt.legend()

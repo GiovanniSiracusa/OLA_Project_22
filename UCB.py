@@ -33,7 +33,7 @@ class UCB(Learner):
 
     def pull_arm_step5(self, margin):
         upper_conf = self.empirical_means + self.confidence
-        idx = np.argmax(upper_conf*margin*np.sum(self.graph, axis=1))
+        idx = np.argmax(margin*np.sum(self.graph, axis=1))
         return idx
 
     def update(self, pulled_arm, reward, buyers, offers, alpha=None, items=None, graph=None):

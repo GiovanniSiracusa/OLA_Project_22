@@ -7,6 +7,7 @@ class TS_Learner(Learner):
     def __init__(self, n_arms, alpha=None, items=None, graph=None):
         super().__init__(n_arms)
         self.beta_parameters = np.ones((n_arms,2))
+        self.total_offers = np.zeros(n_arms)
 
         if np.all(alpha != None): 
             self.alpha = alpha
@@ -43,6 +44,7 @@ class TS_Learner(Learner):
 
     def update(self, pulled_arm, reward, buyers, offers, alpha=None, items=None, graph=None):
         self.t+=1
+        self.total_offers[pulled_arm] += offers
         self.update_observations(pulled_arm, reward)
 
         self.beta_parameters[pulled_arm, 0] = self.beta_parameters[pulled_arm, 0] + buyers.astype(int)
