@@ -103,7 +103,7 @@ class Simulator:
 
         opt_per_product = np.zeros(self.n_products)
         for i in range(100):
-            print("Bruteforce:", i)
+            #print("Bruteforce:", i)
             reward = self.simulate(best_conf, users=100)[0]
             opt_per_product += reward
         opt_per_product /= 100

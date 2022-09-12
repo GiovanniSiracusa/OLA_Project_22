@@ -60,8 +60,9 @@ def main():
                 opt_final=np.append(opt_final,opt1)
             for i in range(300,450):
                 opt_final=np.append(opt_final,opt2)
-            rewardsSW , rewardsCD = step_6()
+            rewardsSW, rewardsCD = step_6()
             plot_regret(opt_final, rewardsSW, rewardsCD, 450, step=6)
+            plot_reward(opt_final, rewardsSW, rewardsCD, 450, step=6)
             break
 
         elif step == 7:
@@ -76,11 +77,13 @@ def main():
 
 
 def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound = 0, step=0):
-    if step==6:
-        labels=["SW","CD"]
-    else:
-        labels=["TS","UCB"]
     plt.figure(0)
+    if step == 6:
+        labels = ["SW UCB", "CD UCB"]
+        plt.axvline(x=150)
+        plt.axvline(x=300)
+    else:
+        labels = ["TS", "UCB"]
     plt.xlabel("t")
     plt.ylabel("Regret")
     #plt.plot(T*[opt])
@@ -114,8 +117,14 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound = 0, ste
     plt.legend()
     plt.show()
 
-def plot_reward(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon):
+def plot_reward(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, step=0):
+
+    plt.figure(0)
     plt.plot(time_horizon*[opt],'b')
+    if step == 6:
+        labels = ["SW UCB", "CD UCB"]
+        plt.axvline(x=150)
+        plt.axvline(x=300)
 
     window = 10
 

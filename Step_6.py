@@ -9,7 +9,11 @@ from simulator import Simulator
 
 
 def step_6():
-    n_experiments = 1
+    #A 150 cambiano i CR ma la price config resta uguale
+    #A 300 i CR restano uguali a quelli di 150 ma cambia la price config
+    #Comprensibile il risultato dato che i learner scelgono gli arm in base alla stima che fanno del CR
+
+    n_experiments = 5
     time_horizon = 450
     sim = [Simulator(i) for i in range(3)]
     cf=[cf1, cf2, cf3]
@@ -39,8 +43,14 @@ def step_6():
             for p in range(sim[phase].n_products):
                 sw[p].update(price_conf[p], reward[p], buyers[p], offers[p])
             rewardsSW = np.append(rewardsSW, np.sum(reward))
-            print(t)
-            print("SW: ", price_conf)
+            #print(t)
+            if t==149:
+                print("SW @150: ", price_conf)
+            if t == 299:
+                print("SW @300: ", price_conf)
+            if t == 449:
+                print("SW @450: ", price_conf)
+
             # print("Reward: ", reward)
             # print(price_conf, reward, cr)
 
@@ -58,7 +68,12 @@ def step_6():
                 cd[p].update(price_conf[p], reward[p], buyers[p], offers[p], cf[phase].margin[p])
             rewardsCD = np.append(rewardsCD, np.sum(reward))
             # print(t)
-            print("CD: ", price_conf)
+            if t == 149:
+                print("CD @150: ", price_conf)
+            if t == 299:
+                print("CD @300: ", price_conf)
+            if t == 449:
+                print("CD @450: ", price_conf)
 
             # print("Reward: ", reward)
 

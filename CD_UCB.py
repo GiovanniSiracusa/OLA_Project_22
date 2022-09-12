@@ -25,7 +25,7 @@ class CD_UCB(UCB):
             self.change_detection[pulled_arm].reset()
             self.total_offers[pulled_arm] = 0
             self.empirical_means[pulled_arm] = 0
-            print("!!!!!!!!!!CHANGE DETECTED!!!!!!!", self.t, pulled_arm)
+            #print("!!!!!!!!!!CHANGE DETECTED!!!!!!!", self.t, pulled_arm)
         
         self.total_offers[pulled_arm] += offers
         #self.empirical_means[pulled_arm] = np.mean(self.valid_rewards_per_arms[pulled_arm])
