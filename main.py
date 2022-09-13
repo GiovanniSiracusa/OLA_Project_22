@@ -68,7 +68,7 @@ def main():
         elif step == 7:
             opt, opt_per_product, best_price_conf = sim.bruteforce()
             rewardsTS, rewardsUCB = step_7(time_horizon)
-            # plot_regret(opt, rewardsTS, rewardsUCB, time_horizon)
+            plot_regret(opt, rewardsTS, rewardsUCB, time_horizon)
             plot_reward(opt, rewardsTS, rewardsUCB, time_horizon)
             break
 
