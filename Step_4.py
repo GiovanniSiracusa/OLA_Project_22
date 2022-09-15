@@ -14,7 +14,6 @@ def step_4(time_horizon):
     rewardsUCB_exp = []
 
     for e in range(n_experiments):
-        # learners = [TS_Learner(sim.n_prices) for i in range(sim.n_products)]
         ts = [TS_Learner(sim.n_prices) for i in range(sim.n_products)]
         ucb = [UCB(sim.n_prices) for i in range(sim.n_products)]
 
@@ -30,7 +29,6 @@ def step_4(time_horizon):
             for p in range(sim.n_products):
                 ts[p].update(price_conf[p], reward[p], buyers[p], offers[p], alphas[p], items[p])
             rewardsTS = np.append(rewardsTS, np.sum(reward))
-            #print(t)
         print("TS final price configuration: ", price_conf)
 
         for t in range(time_horizon):
@@ -40,18 +38,10 @@ def step_4(time_horizon):
             for p in range(sim.n_products):
                 ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p], alphas[p], items[p])
             rewardsUCB = np.append(rewardsUCB, np.sum(reward))
-            # print(t)
-        print("UCB final price configuration: " ,price_conf)
+        print("UCB final price configuration: ", price_conf)
 
-
-        #for i in range(5):
-        #    print(i)
-        #    print("Alpha:", ts[i].alpha)
-        #    print("Items:", ts[i].items)
 
         rewardsTS_exp.append(rewardsTS)
         rewardsUCB_exp.append(rewardsUCB)
 
-        # print("Rewards", rewardsTS)
-        # print("Rewards", rewardsUCB)
     return rewardsTS_exp, rewardsUCB_exp

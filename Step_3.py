@@ -30,9 +30,6 @@ def step_3(time_horizon):
             for p in range(sim.n_products):
                 ts[p].update(price_conf[p], reward[p], buyers[p], offers[p])
             rewardsTS = np.append(rewardsTS, np.sum(reward))
-            #print(t)
-            # print("Reward: ", reward)
-            # print(price_conf, reward, cr)
         print("TS final price configuration: ", price_conf)
 
         for t in range(time_horizon):
@@ -42,15 +39,9 @@ def step_3(time_horizon):
             for p in range(sim.n_products):
                 ucb[p].update(price_conf[p], reward[p], buyers[p], offers[p])
             rewardsUCB = np.append(rewardsUCB, np.sum(reward))
-            #print(t)
         print("UCB final price configuration: ", price_conf)
 
-            # print("Reward: ", reward)
         rewardsTS_exp.append(rewardsTS)
         rewardsUCB_exp.append(rewardsUCB)
         mean_rewards = [ucb[i].get_mean_reward_per_arm() for i in range(sim.n_products)]
-        # ts[1].plot_distribution()
-        # ucb[1].plot_distribution()
-        # print("Rewards", rewardsTS)
-        # print("Rewards", rewardsUCB)
     return rewardsTS_exp, rewardsUCB_exp, mean_rewards

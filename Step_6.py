@@ -21,7 +21,6 @@ def step_6():
     rewardsCD_exp = []
 
     for e in range(n_experiments):
-        # learners = [TS_Learner(self.n_prices) for i in range(self.n_products)]
         sw = [SW_UCB(sim[0].n_prices, 20, cf[0].alphas_mean[i], cf[0].sold_items_mean[i]) for i in range(sim[0].n_products)]
         cd = [CD_UCB(sim[0].n_prices) for i in range(sim[0].n_products)]
 
@@ -43,7 +42,6 @@ def step_6():
             for p in range(sim[phase].n_products):
                 sw[p].update(price_conf[p], reward[p], buyers[p], offers[p])
             rewardsSW = np.append(rewardsSW, np.sum(reward))
-            #print(t)
             if t==149:
                 print("SW @150: ", price_conf)
             if t == 299:
@@ -51,8 +49,6 @@ def step_6():
             if t == 449:
                 print("SW @450: ", price_conf)
 
-            # print("Reward: ", reward)
-            # print(price_conf, reward, cr)
 
         for t in range(time_horizon):
             if t<150:
@@ -67,7 +63,6 @@ def step_6():
             for p in range(sim[phase].n_products):
                 cd[p].update(price_conf[p], reward[p], buyers[p], offers[p], cf[phase].margin[p])
             rewardsCD = np.append(rewardsCD, np.sum(reward))
-            # print(t)
             if t == 149:
                 print("CD @150: ", price_conf)
             if t == 299:
@@ -75,12 +70,8 @@ def step_6():
             if t == 449:
                 print("CD @450: ", price_conf)
 
-            # print("Reward: ", reward)
-
         rewardsSW_exp.append(rewardsSW)
         rewardsCD_exp.append(rewardsCD)
-        # print("Rewards", rewardsTS)
-        # print("Rewards", rewardsUCB)
     return rewardsSW_exp, rewardsCD_exp
 
 

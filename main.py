@@ -117,6 +117,8 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound=0, step=
 
 def plot_reward(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, step=0):
     plt.figure(0)
+    plt.xlabel("t")
+    plt.ylabel("Reward")
     plt.plot(time_horizon * [opt], 'b')
     if step == 6:
         labels = ["SW UCB", "CD UCB"]

@@ -13,8 +13,6 @@ def step_2():
 
     for e in range(n_experiments):
         learner = Greedy_Learner(sim.n_prices, sim.n_products)
-
-        #print("Exp:", e)
         temp_id = -1
         max_reward = 0
         temp_max = 0
@@ -31,8 +29,6 @@ def step_2():
                     (price_conf_history, [price_conf]), axis=0)
                 for i, j in enumerate(price_conf):
                     reward += cf.margin[i, j] * cf.cr_mean[i, j] * cf.alphas_mean[i + 1]
-                    # print(reward)
-                #print(price_conf, np.round(reward, 2), np.sum(reward))
                 # trova un nuovo max
                 if counter == -1:
                     max_reward = reward
@@ -52,11 +48,8 @@ def step_2():
                     max_price_conf = temp_max_conf
                     temp_max = 0
                     learner.update()
-                    # print(temp_id, np.round(max_reward,2), np.sum(max_reward))
                 else:
                     break
-        # print("Max price conf:", max_price_conf, "Max reward:", max_reward, "Max total:", np.sum(max_reward))
-        #print()
 
         if np.sum(max_reward) > np.sum(final_max_reward):
             final_max_price_conf = max_price_conf
@@ -64,12 +57,8 @@ def step_2():
 
     opt_reward = 0
     for i in range(100):
-        #print("Greedy:", i)
         reward = sim.simulate(final_max_price_conf, users=100)[0]
         opt_reward += reward
     opt_reward /= 100
-
-    #print(
-    #    f"Final max reward {opt_reward}\nOpt Reward {np.sum(opt_reward)}\n\nFinal price conf {final_max_price_conf}\n")
 
     return opt_reward, final_max_price_conf
