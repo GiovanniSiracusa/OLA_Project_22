@@ -24,7 +24,7 @@ import numpy as np
 #                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
 #riduzione dei conversion rate del 30% dovuta dalla crisi economica e quindi una tendenza a non acqiostare più alta su tutte le classi
-#FEMMINE <35 ANNI
+# <35 ANNI
 conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
                              [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
                              [0.4, 0.3, 0.2, 0.05],   #Cantinetta per il vino
