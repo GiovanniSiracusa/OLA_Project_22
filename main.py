@@ -83,14 +83,14 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound=0, step=
         plt.axvline(x=150)
         plt.axvline(x=300)
     else:
-        labels = ["TS", "UCB"]
+        labels = ["TS", "UCB", "Bound"]
     plt.xlabel("t")
     plt.ylabel("Regret")
     plt.plot(np.cumsum(np.mean(opt - rewardsTS_exp, axis=0)), 'r', label=labels[0])
     if rewardsUCB_exp is not None:
         plt.plot(np.cumsum(np.mean(opt - rewardsUCB_exp, axis=0)), 'g', label=labels[1])
     if bound != 0:
-        plt.plot(time_horizon * [bound], 'b')
+        plt.plot(time_horizon * [bound], 'b', label=labels[2])
 
     x = np.arange(time_horizon)
     y_ts = (np.cumsum(np.mean(opt - rewardsTS_exp, axis=0)))
@@ -119,7 +119,7 @@ def plot_reward(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, step=0):
     plt.figure(0)
     plt.xlabel("t")
     plt.ylabel("Reward")
-    plt.plot(time_horizon * [opt], 'b')
+    plt.plot(time_horizon * [opt], 'b', label='Optimal')
     if step == 6:
         labels = ["SW UCB", "CD UCB"]
         plt.axvline(x=150)
