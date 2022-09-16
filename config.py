@@ -7,25 +7,24 @@ import numpy as np
 
 #CATEGORIA PRODOROTTI: ARTICOLI PER LA CASA
 #Prodotti associati a categorie:
-#MASCHI <35 --> ALEXA
-#FEMMINE <35 --> POUF
-#MASCHI >35 --> CANTINETTA PER IL VINI
-#FEMMINE >35 --> PIANTA GRASSA
+#GIOVANI <30  --> POUF
+#MASCHI >30 --> CANTINETTA PER IL VINI
+#FEMMINE >30 --> PIANTA GRASSA
 #QUADRO MEDIUM/HIGH PRICE PIACE A TUTTE LE CATEGORIE MA MENO DEI PREFERITI
 
 #PRODOTTI CHE SODDISFANO CATEGORIE CON UN PARAMETRO IN COMUNE ED IL QUADRO SONO PREFRITI A PRODOTTI CHE NON LO FANNO
-#esempio m<35 -->  pouf (<35) = cantinetta (maschio) > quadro > pianta
+#esempio m<30 -->  pouf (<30) = cantinetta (maschio) > quadro > pianta
 
-#uomini e donna < 35 unica categoria --> modificare le percentuali
+#uomini e donna < 30 unica categoria --> modificare le percentuali
 
-#MASCHI <35 ANNI
+#GIOVANI <30 ANNI
 #conversion_rates1 = np.array([[0.9, 0.75, 0.6, 0.3],  #Alexa
 #                             [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
 #                             [0.6, 0.45, 0.3, 0.1],   #Cantinetta per il vino
 #                             [0.4, 0.3, 0.2, 0.05],   #Pianta grassa
 #                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
-#FEMMINE <35 ANNI
+#FEMMINE <35 ANNI  ##??
 conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
                              [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
                              [0.4, 0.3, 0.2, 0.05],   #Cantinetta per il vino
