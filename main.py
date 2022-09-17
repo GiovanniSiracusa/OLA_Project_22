@@ -119,11 +119,14 @@ def plot_reward(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, step=0):
     plt.figure(0)
     plt.xlabel("t")
     plt.ylabel("Reward")
-    plt.plot(time_horizon * [opt], 'b', label='Optimal')
+    
     if step == 6:
         labels = ["SW UCB", "CD UCB"]
+        plt.plot(opt, 'b', label='Optimal')
         plt.axvline(x=150)
         plt.axvline(x=300)
+    else:
+        plt.plot(time_horizon * [opt], 'b', label='Optimal')
 
     window = 10
 

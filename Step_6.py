@@ -21,7 +21,7 @@ def step_6():
     rewardsCD_exp = []
 
     for e in range(n_experiments):
-        sw = [SW_UCB(sim[0].n_prices, 20, cf[0].alphas_mean[i], cf[0].sold_items_mean[i]) for i in range(sim[0].n_products)]
+        sw = [SW_UCB(sim[0].n_prices, 20) for i in range(sim[0].n_products)]
         cd = [CD_UCB(sim[0].n_prices) for i in range(sim[0].n_products)]
 
         print("Exp:", e)
@@ -38,7 +38,7 @@ def step_6():
                 phase=2
             # TS Learner
             price_conf = np.array([sw[i].pull_arm(cf[phase].margin[i]) for i in range(sim[phase].n_products)])
-            reward, buyers, offers, alphas, items, history, previous = sim[phase].simulate(price_conf)
+            reward, buyers, offers, _, _, _, _ = sim[phase].simulate(price_conf)
             for p in range(sim[phase].n_products):
                 sw[p].update(price_conf[p], reward[p], buyers[p], offers[p])
             rewardsSW = np.append(rewardsSW, np.sum(reward))
@@ -59,7 +59,7 @@ def step_6():
                 phase=2
             # UCB
             price_conf = np.array([cd[i].pull_arm(cf[phase].margin[i]) for i in range(sim[phase].n_products)])
-            reward, buyers, offers, alphas, items, history, previous = sim[phase].simulate(price_conf)
+            reward, buyers, offers, _, _, _, _ = sim[phase].simulate(price_conf)
             for p in range(sim[phase].n_products):
                 cd[p].update(price_conf[p], reward[p], buyers[p], offers[p], cf[phase].margin[p])
             rewardsCD = np.append(rewardsCD, np.sum(reward))
