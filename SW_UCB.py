@@ -43,9 +43,10 @@ class SW_UCB(UCB):
             #     self.empirical_means[arm] = np.mean(self.rewards_per_arm[arm][-self.window_size:])
 
             # Mean of conversion rates
+
             self.empirical_means[arm] = sum(el[0] for el in self.pulled_arms[arm][-self.window_size:])
             self.empirical_means[arm] /= sum(el[1] for el in self.pulled_arms[arm][-self.window_size:])
-            
+
             #n_samples = np.sum(self.pulled_arms[-self.window_size: , 0] == arm)
             n_samples = sum(el[1] for el in self.pulled_arms[arm][-self.window_size:])
             self.confidence[arm] = (2*np.log(self.t)/n_samples)**0.5 if n_samples>0 else np.inf

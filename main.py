@@ -42,8 +42,8 @@ def main():
         elif step == 5:
             opt, opt_per_product, best_price_conf = sim.bruteforce()
             rewardsTS = step_5(time_horizon)
-            plot_regret(opt, rewardsTS, None, time_horizon)
-            plot_reward(opt, rewardsTS, None, time_horizon)
+            plot_regret(opt, rewardsTS, None, time_horizon, step=5)
+            plot_reward(opt, rewardsTS, None, time_horizon, step=5)
             break
 
         elif step == 6:
@@ -82,6 +82,8 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound=0, step=
         labels = ["SW UCB", "CD UCB"]
         plt.axvline(x=150)
         plt.axvline(x=300)
+    if step == 5:
+        labels = ["Learner"]
     else:
         labels = ["TS", "UCB", "Bound"]
     plt.xlabel("t")
@@ -127,16 +129,22 @@ def plot_reward(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, step=0):
         plt.axvline(x=300)
     else:
         plt.plot(time_horizon * [opt], 'b', label='Optimal')
+    if step == 5:
+        labels=["Learner"]
+    else:
+        labels=["TS","UCB"]
+
+
 
     window = 10
 
     average_y = moving_average(np.mean(rewardsTS_exp, axis=0), window)
-    plt.plot(average_y[:-10], 'y', label='TS_avg')
+    plt.plot(average_y[:-10], 'y', label=labels[0])
     # plt.plot(np.mean(rewardsTS_exp, axis=0),'r', label='TS')
 
     if rewardsUCB_exp is not None:
         average_y = moving_average(np.mean(rewardsUCB_exp, axis=0), window)
-        plt.plot(average_y[:-10], 'c', label='UCB_avg')
+        plt.plot(average_y[:-10], 'c', label=labels[1])
     # plt.plot(np.mean(rewardsUCB_exp, axis=0),'g', label='UCB')
 
     plt.legend()
