@@ -24,19 +24,19 @@ import numpy as np
 #                             [0.4, 0.3, 0.2, 0.05],   #Pianta grassa
 #                             [0.6, 0.45, 0.3, 0.1]])  #Pouf
 
-#FEMMINE <35 ANNI  ##??
+#FEMMINE <30 ANNI  ##??
 conversion_rates2 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
                              [0.5, 0.4, 0.3, 0.1],    #Quadro medium/high price
                              [0.4, 0.3, 0.2, 0.05],   #Cantinetta per il vino
                              [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
                              [0.9, 0.75, 0.6, 0.3]])  #Pouf
-#MASCHI >35 ANNI
+#MASCHI >30 ANNI
 conversion_rates3 = np.array([[0.6, 0.45, 0.3, 0.1],  #Alexa
                              [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
                              [0.9, 0.75, 0.6, 0.3],   #Cantinetta per il vino
                              [0.6, 0.45, 0.3, 0.1],   #Pianta grassa
                              [0.4, 0.3, 0.2, 0.05]])  #Pouf
-#FEMMINE >35 ANNI
+#FEMMINE >30 ANNI
 conversion_rates4 = np.array([[0.4, 0.3, 0.2, 0.05],  #Alexa
                              [0.5, 0.3, 0.2, 0.1],    #Quadro medium/high price
                              [0.6, 0.45, 0.3, 0.1],   #Cantinetta per il vino
@@ -96,12 +96,13 @@ sold_items_mean = (sold_items2+sold_items3+sold_items4)/3
 #0,2=peggioramento  0,3=stesse condizioni   0,4=miglioramento
 #assunzione quadro = a prodotti che condividono una categoria
 
-#MASCHI <35
+#MASCHI <30
 #graph_probs1 = np.array([[0, 0.7, 0.6, 0.8, 0.6],     #riga più alta perché prodotto che soddisfa di più la categoria
 #                        [0.2, 0, 0.3, 0.4, 0.3],
 #                        [0.2, 0.3, 0, 0.4, 0.3],
 #                        [0.1, 0.2, 0.2, 0, 0.2],
 #                        [0.2, 0.3, 0.3, 0.4, 0]]).T
+
 
 #GIOVANI <30
 graph_probs2 = np.array([[0.0, 0.4, 0.4, 0.4, 0.4],
@@ -123,7 +124,7 @@ graph_probs4 = np.array([[0, 0.2, 0.2, 0.2, 0.2],
                         [0.3, 0.3, 0, 0.3, 0.3],
                         [0.8, 0.7, 0.6, 0.0, 0.6],      #riga più alta perché prodotto che soddisfa di più la categoria
                         [0.4, 0.4, 0.4, 0.4, 0.4]]).T
-
+ 
 graph_probs_mean = (graph_probs2 + graph_probs3 + graph_probs4)/3
 
 l = 0.8
