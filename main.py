@@ -1,10 +1,10 @@
-from simulator import *
-from Step_2 import step_2
-from Step_3 import step_3
-from Step_4 import step_4
-from Step_5 import step_5
-from Step_6 import step_6
-from Step_7 import step_7
+from Environment.simulator import *
+from Steps.Step_2 import step_2
+from Steps.Step_3 import step_3
+from Steps.Step_4 import step_4
+from Steps.Step_5 import step_5
+from Steps.Step_6 import step_6
+from Steps.Step_7 import step_7
 import matplotlib.pyplot as plt
 
 
@@ -82,8 +82,8 @@ def plot_regret(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, bound=0, step=
         labels = ["SW UCB", "CD UCB"]
         plt.axvline(x=150)
         plt.axvline(x=300)
-    if step == 5:
-        labels = ["Learner"]
+    elif step == 5:
+        labels = ["Learners"]
     else:
         labels = ["TS", "UCB", "Bound"]
     plt.xlabel("t")
@@ -121,18 +121,19 @@ def plot_reward(opt, rewardsTS_exp, rewardsUCB_exp, time_horizon, step=0):
     plt.figure(0)
     plt.xlabel("t")
     plt.ylabel("Reward")
-    
-    if step == 6:
+
+    if step == 5:
+        labels=["Learners"]
+        plt.plot(time_horizon * [opt], 'b', label='Optimal')
+    elif step == 6:
         labels = ["SW UCB", "CD UCB"]
         plt.plot(opt, 'b', label='Optimal')
         plt.axvline(x=150)
         plt.axvline(x=300)
     else:
+        labels = ["TS", "UCB"]
         plt.plot(time_horizon * [opt], 'b', label='Optimal')
-    if step == 5:
-        labels=["Learner"]
-    else:
-        labels=["TS","UCB"]
+
 
 
 

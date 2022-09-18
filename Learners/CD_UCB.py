@@ -1,6 +1,6 @@
 import numpy as np
-from CUSUM import CUSUM
-from UCB import UCB
+from Learners.CUSUM import CUSUM
+from Learners.UCB import UCB
 
 class CD_UCB(UCB):
     def __init__(self, n_arms, M=20, eps=0.05, h=40, alpha=0.01):

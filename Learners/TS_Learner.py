@@ -1,5 +1,5 @@
 import math
-from Learner import *
+from Learners.Learner import Learner
 import numpy as np
 
 class TS_Learner(Learner):

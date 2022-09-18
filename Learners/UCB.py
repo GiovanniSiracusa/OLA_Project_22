@@ -1,5 +1,5 @@
 import math
-from Learner import Learner
+from Learners.Learner import Learner
 import numpy as np
 
 class UCB(Learner):

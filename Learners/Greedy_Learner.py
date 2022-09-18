@@ -1,4 +1,4 @@
-from Learner import *
+from Learners.Learner import Learner
 import numpy as np
 
 class Greedy_Learner(Learner):

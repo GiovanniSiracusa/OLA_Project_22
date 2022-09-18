@@ -1,9 +1,8 @@
 import numpy as np
-import config as cf
-from TS_Learner import TS_Learner
-from UCB import UCB
-from simulator import Simulator
-from Greedy_Learner import Greedy_Learner
+from Config import config as cf
+from Learners.TS_Learner import TS_Learner
+from Learners.UCB import UCB
+from Environment.simulator import Simulator
 
 
 def step_3(time_horizon):
@@ -24,7 +23,7 @@ def step_3(time_horizon):
         rewardsUCB = np.array([])
 
         for t in range(time_horizon):
-            # TS Learner
+            # TS Learners
             price_conf = np.array([ts[i].pull_arm(cf.margin[i]) for i in range(sim.n_products)])
             reward, buyers, offers, _, _, _, _ = sim.simulate(price_conf)
             for p in range(sim.n_products):

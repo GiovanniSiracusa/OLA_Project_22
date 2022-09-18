@@ -1,7 +1,7 @@
 import numpy as np
-import config as cf
-from simulator import Simulator
-from Greedy_Learner import Greedy_Learner
+from Config import config as cf
+from Environment.simulator import Simulator
+from Learners.Greedy_Learner import Greedy_Learner
 
 
 def step_2():

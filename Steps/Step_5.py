@@ -1,8 +1,7 @@
 import numpy as np
-import config as cf
-from TS_Learner import TS_Learner
-from UCB import UCB
-from simulator import Simulator
+from Config import config as cf
+from Learners.TS_Learner import TS_Learner
+from Environment.simulator import Simulator
 
 
 def step_5(time_horizon):
@@ -19,7 +18,7 @@ def step_5(time_horizon):
         rewardsTS = np.array([])
 
         for t in range(time_horizon):
-            # TS Learner
+            # TS Learners
             price_conf = np.array([ts[i].pull_arm_step5(cf.margin[i]) for i in range(sim.n_products)])
             reward, buyers, offers, alphas, items, history, previous = sim.simulate(price_conf)
             graph_prob = sim.estimate_probabilities(history, previous)

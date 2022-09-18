@@ -25,12 +25,12 @@ if __name__ == '__main__':
         ts_learner = PBM_TS(n_arms, n_pos, np.array([0.9, 0.6, 0.3]), M=10)
         ucb_learner = PBM_UCB(n_arms, n_pos, np.array([0.9, 0.6, 0.3]), delta=10)
         for t in tqdm(range(T)):
-            # Thompson Sampling Learner
+            # Thompson Sampling Learners
             pulled_arm = ts_learner.pull_arm()
             reward = env.round(pulled_arm)
             ts_learner.update(pulled_arm, reward)
 
-            # UCB Learner
+            # UCB Learners
             pulled_arm = ucb_learner.pull_arm()
             reward = env.round(pulled_arm)
             ucb_learner.update(pulled_arm, reward)

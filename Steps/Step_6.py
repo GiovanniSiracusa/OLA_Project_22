@@ -1,11 +1,9 @@
 import numpy as np
-import config as cf1
-import config1 as cf2
-import config3 as cf3
+from Config import config3 as cf3, config1 as cf2, config as cf1
 
-from SW_UCB import SW_UCB
-from CD_UCB import CD_UCB
-from simulator import Simulator
+from Learners.SW_UCB import SW_UCB
+from Learners.CD_UCB import CD_UCB
+from Environment.simulator import Simulator
 
 
 def step_6():
@@ -36,7 +34,7 @@ def step_6():
                 phase=1
             else:
                 phase=2
-            # TS Learner
+            # TS Learners
             price_conf = np.array([sw[i].pull_arm(cf[phase].margin[i]) for i in range(sim[phase].n_products)])
             reward, buyers, offers, _, _, _, _ = sim[phase].simulate(price_conf)
             for p in range(sim[phase].n_products):

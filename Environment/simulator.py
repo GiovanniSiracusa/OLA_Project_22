@@ -1,16 +1,8 @@
 import random
-from typing import List
-from CD_UCB import CD_UCB
 
-from Gaussian_TS_Learner import Gaussian_TS_Learner
-from Greedy_Learner import Greedy_Learner
-from SW_UCB import SW_UCB
-from TS_Learner import TS_Learner
-from UCB import UCB
 import numpy as np
-from pricing_env import UserClass
+from Environment.user_class import UserClass
 import matplotlib.pyplot as plt
-from scipy.ndimage import uniform_filter1d
 
 #np.random.seed(seed=3259414887)
 #random.seed(1111)
@@ -25,12 +17,11 @@ class Simulator:
 
     def __init__(self, config_file=0):
         if config_file == 0:
-            import config as cf
+            from Config import config as cf
         if config_file == 1:
-            import config1 as cf
+            from Config import config1 as cf
         if config_file == 2:
-            import config3 as cf
-
+            from Config import config3 as cf
 
         self.cr_mean = cf.cr_mean
         self.alphas_mean = cf.alphas_mean

@@ -1,4 +1,4 @@
-from UCB import UCB
+from Learners.UCB import UCB
 import numpy as np
 
 class SW_UCB(UCB):

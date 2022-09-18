@@ -1,8 +1,8 @@
 import numpy as np
-import config as cf
-from TS_Learner import TS_Learner
-from UCB import UCB
-from simulator import Simulator
+from Config import config as cf
+from Learners.TS_Learner import TS_Learner
+from Learners.UCB import UCB
+from Environment.simulator import Simulator
 
 
 def step_7(time_horizon):
@@ -24,7 +24,7 @@ def step_7(time_horizon):
 
         for cl in range(3):
             for t in range(time_horizon):
-                # TS Learner
+                # TS Learners
                 price_conf = np.array([ts[cl][i].pull_arm(cf.margin[i]) for i in range(sim.n_products)])
                 reward, buyers, offers, alphas, items ,_ ,_ = sim.simulate(price_conf, cl_number=cl)
                 for p in range(sim.n_products):
