@@ -84,7 +84,7 @@ sold_items_mean = (sold_items2+sold_items3+sold_items4)/3
 #pouf
 
 
-#GIOVANI <30
+#PERSONE <30
 graph_probs2 = np.array([[0.0, 0.4, 0.4, 0.4, 0.4],
                         [0.3, 0.0, 0.3, 0.3, 0.3],
                         [0.2, 0.2, 0.0, 0.2, 0.2],
